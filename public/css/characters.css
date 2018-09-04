@@ -1,0 +1,28 @@
+#characters {
+    min-height: 130px;
+    text-align: center;
+}
+
+#characters .empty-message {
+    margin-top: 100px;
+    text-align: center;
+    color: gray;
+}
+
+.dialog .character-image {
+    width: 60px;
+    margin: 3px;
+}
+
+.toolbox-tab .character {
+    display: inline-block;
+    margin: 10px;
+}
+
+.toolbox-tab .character img {
+    width: 80px;
+}
+
+.dialog .character-image.selected {
+    outline: 1px solid black;
+}

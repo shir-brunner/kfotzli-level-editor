@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Level Editor</title>
+    <link rel="stylesheet" href="css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="css/vendor/font-awesome.min.css">
+    <link rel="stylesheet" href="css/vendor/jquery-ui.min.css">
+    <link rel="stylesheet" href="css/vendor/toastr.min.css">
+    <link rel="stylesheet" href="css/checkboxes.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/level_preview.css">
+    <link rel="stylesheet" href="css/dialog.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/characters.css">
+</head>
+<body>
+<div id="editor">
+    <div id="level" class="no-select">
+        <img id="background"/>
+        <div id="game-objects"></div>
+        <div id="spawn-points"></div>
+    </div>
+</div>
+<div id="toolbox" class="hide-mini-map">
+    <div id="tools">
+        <div id="toolbox-nav">
+            <div class="btn btn-primary" title="Level Info" toggles="level-info"><i class="fa fa-cog"></i></div>
+            <div class="btn btn-primary" title="Platforms" toggles="ground-objects"><i class="fa fa-bars"></i></div>
+            <div class="btn btn-primary" title="Items" toggles="items"><i class="fa fa-tree"></i></div>
+            <div class="btn btn-primary" title="Creatures" toggles="creatures"><i class="fa fa-user"></i></div>
+            <div class="btn btn-primary" title="Prefabs" toggles="prefabs"><i class="fa fa-cube"></i></div>
+            <div class="btn btn-primary" title="Characters" toggles="characters"><i class="fa fa-smile-o"></i></div>
+            <div class="btn btn-primary float-right default" title="Load Level" toggles="load-levels"><i
+                    class="fa fa-folder-open"></i></div>
+            <div class="btn btn-primary float-right mr-1" title="Save Level" id="save-level"><i class="fa fa-save"></i>
+            </div>
+        </div>
+        <div id="toolbox-nav-placeholder"></div>
+        <div id="toolbox-tabs">
+            <div class="toolbox-tab" tab="level-info">
+                <div class="form-group">
+                    <label>Level Name</label>
+                    <input type="text" id="level-name" value="Untitled Level" class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label>Level Size</label>
+                    <div class="input-group">
+                        <input type="number" id="level-width" value="3000" class="form-control" style="width: 70px"
+                               placeholder="Width"/>
+                        <div class="input-group-text">X</div>
+                        <input type="number" id="level-height" value="2000" class="form-control" style="width: 70px"
+                               placeholder="Height"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Background</label>
+                    <select class="form-control" id="level-background"></select>
+                </div>
+                <div class="form-group">
+                    <label>Win Conditions</label>
+                    <div class="input-group">
+                        <select class="form-control">
+                            <option value=""></option>
+                        </select>
+                        <div class="btn btn-primary"><i class="fa fa-plus"></i></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Lose Conditions</label>
+                    <div class="input-group">
+                        <select class="form-control">
+                            <option value=""></option>
+                        </select>
+                        <div class="btn btn-primary"><i class="fa fa-plus"></i></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Spawn Point</label>
+                    <div><img src="img/items/flagRed2.png" class="draggable toolbox-object" id="spawn-point"/></div>
+                </div>
+            </div>
+            <div class="toolbox-tab no-select" tab="ground-objects" id="ground-objects"></div>
+            <div class="toolbox-tab no-select" tab="items" id="items"></div>
+            <div class="toolbox-tab no-select" tab="creatures" id="creatures"></div>
+            <div class="toolbox-tab no-select" tab="object-editor" id="object-editor"></div>
+            <div class="toolbox-tab no-select" tab="load-levels" id="load-levels">
+                <div id="levels"></div>
+            </div>
+            <div class="toolbox-tab no-select" tab="prefabs" id="prefabs"></div>
+            <div class="toolbox-tab no-select" tab="characters">
+                <div id="characters"></div>
+                <hr />
+                <div class="btn btn-primary" id="new-character"><i class="fa fa-plus"></i> New Character</div>
+            </div>
+        </div>
+    </div>
+    <div id="mini-map" class="no-select"></div>
+</div>
+<script src="js/vendor/jquery.min.js"></script>
+<script src="js/vendor/jquery-ui.min.js"></script>
+<script src="js/vendor/lodash.min.js"></script>
+<script src="js/vendor/toastr.min.js"></script>
+<script src="js/main.js"></script>
+<script src="js/editor.js"></script>
+<script src="js/toolbox.js"></script>
+<script src="js/object-editor.js"></script>
+<script src="js/level.js"></script>
+<script src="js/prefabs.js"></script>
+<script src="js/animations.js"></script>
+<script src="js/characters.js"></script>
+</body>
+</html>

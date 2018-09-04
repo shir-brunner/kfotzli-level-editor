@@ -1,0 +1,141 @@
+body {
+    display: flex;
+    flex-direction: row;
+    margin: 0px;
+}
+
+#toolbox {
+    flex: 1 0 0;
+    border-left: 1px solid black;
+}
+
+#tools {
+    height: 70vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+#toolbox-nav-placeholder {
+    height: 59px;
+}
+
+#toolbox-nav {
+    position: fixed;
+    background: white;
+    height: 59px;
+    z-index: 1;
+}
+
+.hide-mini-map #tools {
+    height: 100vh;
+}
+.hide-mini-map #mini-map {
+    display: none;
+}
+
+#mini-map {
+    flex: 1 0 0;
+    height: 30vh;
+    border-top: 1px solid black;
+}
+
+#editor {
+    flex: 3 0 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+#toolbox-nav {
+    padding: 10px;
+    border-bottom: 1px solid black;
+}
+
+#background {
+    width: 100%;
+    height: 100%;
+}
+
+#toolbox-tabs {
+    padding: 20px;
+}
+
+.cp {
+    cursor: pointer;
+}
+
+#toolbox .draggable {
+    margin: 5px;
+    width: 64px;
+    height: 64px;
+    cursor: move;
+}
+
+.draggable {
+    width: 100px;
+    height: 100px;
+}
+
+#level {
+    position: relative;
+}
+
+#level .draggable {
+    position: absolute;
+}
+
+.draggable img {
+    width: 100%;
+    height: 100%;
+}
+
+.world-object {
+    cursor: move;
+}
+
+.no-select {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+.full-width {
+    width: 100%;
+}
+
+.relative {
+    position: relative;
+}
+
+.collider {
+    outline: 3px solid black;
+    position: absolute !important;
+}
+
+.prefab-container {
+    float: left;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+    width: 100px;
+}
+
+.prefab-container .draggable {
+    display: inline-block;
+}
+
+.prefab-container img {
+    margin-bottom: 3px;
+}
+
+#spawn-point {
+    width: 100px;
+    height: 100px;
+}
+
+.spawn-point {
+    cursor: move;
+}

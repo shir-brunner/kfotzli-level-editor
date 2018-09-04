@@ -1,0 +1,48 @@
+.animations-table {
+    width: 100%;
+}
+
+.animations-table tr:first-child {
+    border-top: 1px solid black;
+}
+
+.animations-table tr {
+    border-bottom: 1px solid black;
+}
+
+.animations-table th {
+    text-align: center;
+}
+
+.animations-table td, .animations-table th {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.animations-table .frames .trash {
+    position: absolute;
+    color: gray;
+    left: 20px;
+    top: 20px;
+    display: none;
+}
+
+.animations-table .frames {
+    height: 100px;
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    position: relative;
+}
+
+.animations-table .frame {
+    margin-top: 5px;
+    height: 90px;
+    margin-left: 5px;
+    margin-right: 5px;
+    cursor: move;
+}
+
+.animations-table .animation-preview {
+    height: 90px;
+}
