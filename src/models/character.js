@@ -7,6 +7,8 @@ const characterSchema = new Schema({
     jumpHeight: Number,
     image: String,
     speed: Number,
+    width: { type: Number, default: 131 },
+    height: { type: Number, default: 188 },
     animations: {},
 });
 

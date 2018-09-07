@@ -119,8 +119,8 @@ function appendLevelPreviewTo($target, level, { showSize, height } = {}) {
         let $gameObject = $('<img src="' + gameObject.image + '" />');
         $gameObject.css({
             position: 'absolute',
-            left: gameObject.position.x / level.size.width * previewWidth,
-            top: gameObject.position.y / level.size.height * previewHeight,
+            left: gameObject.x / level.size.width * previewWidth,
+            top: gameObject.y / level.size.height * previewHeight,
             width: 100 / level.size.width * previewWidth,
             height: 100 / level.size.height * previewHeight,
         });
@@ -168,8 +168,8 @@ function loadLevel(level) {
     level.gameObjects.forEach(gameObject => {
         let $object = createWorldObject(gameObject);
         $object.css({
-            left: gameObject.position.x,
-            top: gameObject.position.y
+            left: gameObject.x,
+            top: gameObject.y
         });
         $gameObjects.append($object);
         setObjectDraggable($object);
@@ -249,9 +249,7 @@ function setSpawnPointDraggable($spawnPoint) {
 
 function buildGameObject($object) {
     let gameObject = $object.data('info');
-    gameObject.position = {
-        x: parseInt($object.css('left')),
-        y: parseInt($object.css('top')),
-    };
+    gameObject.x = parseInt($object.css('left'));
+    gameObject.y = parseInt($object.css('top'));
     return gameObject;
 }

@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const fields = {
-    position: {
-        x: Number,
-        y: Number
-    },
+    x: Number,
+    y: Number,
+    width: { type: Number, default: 100 },
+    height: { type: Number, default: 100 },
     image: String,
     stuckable: { type: Boolean, default: false },
     climbable: { type: Boolean, default: false },

@@ -33,8 +33,8 @@ function setEditorDroppable() {
             } else if ($draggable.hasClass('toolbox-object')) {
                 let left = position.left + $editor.scrollLeft();
                 let top = position.top + $editor.scrollTop();
-                let info = _.cloneDeep($(ui.draggable).data('info'));
-                let $object = createWorldObject(info || { image: $draggable.attr('src') });
+                let info = getDefaultInfoFromToolboxObject($(ui.draggable));
+                let $object = createWorldObject(_.assign(info,{ image: $draggable.attr('src') }));
                 $object.css({
                     left: Math.round(left / SQUARE_SIZE) * SQUARE_SIZE,
                     top: Math.round(top / SQUARE_SIZE) * SQUARE_SIZE
@@ -54,4 +54,13 @@ function setEditorDroppable() {
             updateMiniMap();
         }
     });
+}
+
+function getDefaultInfoFromToolboxObject($toolboxObject) {
+    let info = {};
+
+    if ($toolboxObject.parents('#ground-objects').length)
+        info.stuckable = true;
+
+    return info;
 }
