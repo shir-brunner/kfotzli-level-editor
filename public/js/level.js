@@ -20,6 +20,11 @@ $(function () {
             return;
         }
 
+        if(level.spawnPoints.length < level.minPlayers) {
+            showToast('error', `Level must have at least ${level.minPlayers} spawn points`);
+            return;
+        }
+
         loading = true;
         $.ajax({
             url: 'levels' + (currentLevel ? '/' + currentLevel._id : ''),
@@ -79,6 +84,7 @@ function buildLevel() {
     let $levelWidth = $('#level-width');
     let $levelHeight = $('#level-height');
     let $levelBackground = $('#level-background');
+    let $minPlayers = $('#min-players');
 
     return {
         name: $levelName.val(),
@@ -95,7 +101,8 @@ function buildLevel() {
                 x: parseInt($(this).css('left')),
                 y: parseInt($(this).css('top')),
             };
-        }).get()
+        }).get(),
+        minPlayers: $minPlayers.val()
     };
 }
 
@@ -163,6 +170,7 @@ function loadLevel(level) {
     $('#level-width').val(level.size.width);
     $('#level-height').val(level.size.height);
     $('#level-background').val(level.background);
+    $('#min-players').val(level.minPlayers);
     updateLevel();
 
     level.gameObjects.forEach(gameObject => {

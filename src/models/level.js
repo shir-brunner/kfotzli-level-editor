@@ -14,7 +14,8 @@ const levelSchema = new Schema({
     spawnPoints: [{
         x: Number,
         y: Number
-    }]
+    }],
+    minPlayers: { type: Number, default: 2 }
 });
 
 module.exports = mongoose.model('Level', levelSchema);
