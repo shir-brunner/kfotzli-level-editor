@@ -62,6 +62,10 @@ function editCharacter($character) {
     html += '           <label>Jump Height</label>';
     html += '           <input type="number" class="form-control jump-height" />';
     html += '       </div>';
+    html += '       <div class="form-group">';
+    html += '           <label>Climb Speed</label>';
+    html += '           <input type="number" class="form-control climb-speed" />';
+    html += '       </div>';
     html += '       <hr class="mt-5"/>';
     html += '       <div class="form-group">';
 
@@ -88,6 +92,7 @@ function editCharacter($character) {
     let $characterName = $dialogBody.find('.character-name').val(characterInfo && characterInfo.name);
     let $speed = $dialogBody.find('.speed').val(characterInfo && characterInfo.speed);
     let $jumpHeight = $dialogBody.find('.jump-height').val(characterInfo && characterInfo.jumpHeight);
+    let $climbSpeed = $dialogBody.find('.climb-speed').val(characterInfo && characterInfo.climbSpeed);
 
     $images.on('click', '.character-image', function () {
         $images.find('.character-image').removeClass('selected');
@@ -116,6 +121,7 @@ function editCharacter($character) {
             name: $characterName.val(),
             speed: $speed.val(),
             jumpHeight: $jumpHeight.val(),
+            climbSpeed: $climbSpeed.val(),
             image: $dialogBody.find('.character-image.selected').attr('src'),
         }, () => loadCharacters());
         closeDialog();
@@ -135,6 +141,7 @@ function validateCharacterForm($dialogBody) {
     let $name = $dialogBody.find('.character-name');
     let $speed = $dialogBody.find('.speed');
     let $jumpHeight = $dialogBody.find('.jump-height');
+    let $climbSpeed = $dialogBody.find('.climb-speed');
     let $selectedImage = $dialogBody.find('.character-image.selected');
 
     if(!$name.val()) {
@@ -146,6 +153,12 @@ function validateCharacterForm($dialogBody) {
     if(!$speed.val()) {
         showToast('error', 'Character speed is not defined');
         $speed.focus();
+        return false;
+    }
+
+    if(!$climbSpeed.val()) {
+        showToast('error', 'Character climb speed is not defined');
+        $climbSpeed.focus();
         return false;
     }
 

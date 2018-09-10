@@ -22,6 +22,10 @@ function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+function spaceBeforeCapitals(text) {
+    return text.replace(/([A-Z])/g, ' $1').trim();
+}
+
 function showToast(toastType, message, options = {}) {
     let func = toastr[toastType] || toastr.success;
     toastr.options = {

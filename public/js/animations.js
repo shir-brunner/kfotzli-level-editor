@@ -13,7 +13,7 @@ function showAnimationsDialog($object, resourceType) {
         $dialogBody.append('<div class="btn btn-success save-character float-right mt-3">Save Character Animations</div>');
 
     let objectInfo = $object.data('info');
-    let animationTypes = ['walk', 'climb', 'bump', 'jump', 'death', 'idle'];
+    let animationTypes = ['walkLeft', 'walkRight', 'climb', 'jumpLeft', 'jumpRight', 'death', 'idle'];
     $animationsTable.append(animationTypes.map(animationType => {
         return getAnimationRow(animationType, objectInfo);
     }));
@@ -35,7 +35,7 @@ function getAnimationRow(animationType, objectInfo) {
     let html = '';
 
     html += '<tr>';
-    html += '   <td style="width: 100px;" class="bg-secondary text-white text-center">' + htmlEncode(capitalize(animationType)) + '</td>';
+    html += '   <td style="width: 100px;" class="bg-secondary text-white text-center">' + htmlEncode(spaceBeforeCapitals(capitalize(animationType))) + '</td>';
     html += '   <td style="padding: 0;"><div class="frames"></div></td>';
     html += '   <td style="width: 100px;"><img class="animation-preview" /></td>';
     html += '</tr>';

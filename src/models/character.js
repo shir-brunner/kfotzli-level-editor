@@ -5,6 +5,7 @@ const characterSchema = new Schema({
     name: String,
     created: Date,
     jumpHeight: Number,
+    climbSpeed: Number,
     image: String,
     speed: Number,
     width: { type: Number, default: 131 },
