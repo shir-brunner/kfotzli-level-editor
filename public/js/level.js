@@ -223,6 +223,9 @@ function setObjectDraggable($object) {
                 let info = _.cloneDeep($object.data('info'));
                 $clone.data('info', info).appendTo($level);
                 setObjectDraggable($clone);
+                $clone.on('click', function() {
+                    editObject($clone);
+                });
             }
         },
         stop: function () {
