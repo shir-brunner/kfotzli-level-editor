@@ -31,8 +31,8 @@ function editObject($object, isPrefab) {
     html += '               <input type="number" class="form-control bump-height" />';
     html += '           </div>';
     html += '       </div>';
-    html += '       <label class="check-container"> Causes Death';
-    html += '           <input type="checkbox" class="causes-death" />';
+    html += '       <label class="check-container"> Obstacle';
+    html += '           <input type="checkbox" class="obstacle" />';
     html += '           <span class="checkmark"></span>';
     html += '       </label>';
     html += '   </div>';
@@ -63,7 +63,7 @@ function editObject($object, isPrefab) {
     if(isPrefab)
         html += '<div class="btn btn-danger btn-sm btn-block delete-prefab">Delete Prefab</div>';
 
-    //must be called before initialising the collider because it has no width to rely on
+    // must be called before initialising the collider because it has no width to rely on
     showToolboxTab('object-editor');
 
     $objectEditor.append(html);
@@ -94,9 +94,9 @@ function editObject($object, isPrefab) {
         objectInfo.climbable = $(this).is(':checked');
     });
 
-    let $causesDeath = $objectEditor.find('.causes-death');
-    $causesDeath.prop('checked', objectInfo.causesDeath).on('change', function () {
-        objectInfo.causesDeath = $(this).is(':checked');
+    let $obstacle = $objectEditor.find('.obstacle');
+    $obstacle.prop('checked', objectInfo.obstacle).on('change', function () {
+        objectInfo.obstacle = $(this).is(':checked');
     });
 
     let $makePrefab = $objectEditor.find('.make-prefab');

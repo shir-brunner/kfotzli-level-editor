@@ -11,7 +11,7 @@ const fields = {
     climbable: { type: Boolean, default: false },
     bumpable: { type: Boolean, default: false },
     bumpHeight: { type: Number, required: false },
-    causesDeath: { type: Boolean, default: false },
+    obstacle: { type: Boolean, default: false },
     padding: {
         left: Number,
         top: Number,

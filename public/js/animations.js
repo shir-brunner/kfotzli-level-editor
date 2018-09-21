@@ -4,7 +4,7 @@ function showAnimationsDialog($object, resourceType) {
     let $dialog = showDialog();
     let $dialogBody = $dialog.find('.dialog-body');
 
-    $dialogBody.html('<table class="animations-table"><tr class="bg-secondary text-white"><th>Animation</th><th>Frames</th><th>Preview</th></tr></table>');
+    $dialogBody.html('<table class="animations-table"><tr class="bg-secondary text-white"><th>Animation</th><th></th><th>Frames</th><th>Preview</th></tr></table>');
     let $animationsTable = $dialogBody.find('table');
 
     if(resourceType === 'prefab')
@@ -13,7 +13,7 @@ function showAnimationsDialog($object, resourceType) {
         $dialogBody.append('<div class="btn btn-success save-character float-right mt-3">Save Character Animations</div>');
 
     let objectInfo = $object.data('info');
-    let animationTypes = ['walkLeft', 'walkRight', 'climb', 'jumpLeft', 'jumpRight', 'death', 'idle'];
+    let animationTypes = ['idle', 'walkLeft', 'walkRight', 'climb', 'jumpLeft', 'jumpRight', 'death', 'bump'];
     $animationsTable.append(animationTypes.map(animationType => {
         return getAnimationRow(animationType, objectInfo);
     }));
@@ -36,6 +36,7 @@ function getAnimationRow(animationType, objectInfo) {
 
     html += '<tr>';
     html += '   <td style="width: 100px;" class="bg-secondary text-white text-center">' + htmlEncode(spaceBeforeCapitals(capitalize(animationType))) + '</td>';
+    html += '   <td style="width: 140px; padding: 20px;"><label><input type="checkbox" class="repeatable" /> Repeatable</label></td>';
     html += '   <td style="padding: 0;"><div class="frames"></div></td>';
     html += '   <td style="width: 100px;"><img class="animation-preview" /></td>';
     html += '</tr>';
@@ -43,6 +44,13 @@ function getAnimationRow(animationType, objectInfo) {
     let $animationRow = $(html);
     let $frames = $animationRow.find('.frames');
     let $animationPreview = $animationRow.find('.animation-preview');
+    let $repeatable = $animationRow.find('.repeatable');
+    let repeatable = _.get(objectInfo, `animations.${animationType}.repeatable`);
+
+    $repeatable.prop('checked', repeatable).on('change', function() {
+        _.set(objectInfo, `animations.${animationType}.repeatable`, $repeatable.is(':checked'));
+    });
+
     $frames.append('<i class="fa fa-trash fa-4x trash"></i>');
     let $trash = $frames.find('.trash');
 
