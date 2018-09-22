@@ -62,27 +62,26 @@
                     <input type="number" id="min-players" value="2" class="form-control"/>
                 </div>
                 <div class="form-group">
-                    <label>Win Conditions</label>
-                    <div class="input-group">
-                        <select class="form-control">
-                            <option value=""></option>
-                        </select>
-                        <div class="btn btn-primary"><i class="fa fa-plus"></i></div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Lose Conditions</label>
-                    <div class="input-group">
-                        <select class="form-control">
-                            <option value=""></option>
-                        </select>
-                        <div class="btn btn-primary"><i class="fa fa-plus"></i></div>
-                    </div>
-                </div>
-                <div class="form-group">
                     <label>Spawn Point</label>
-                    <div><img src="img/items/flagRed2.png" class="draggable toolbox-object" id="spawn-point"/></div>
+                    <div>
+                        <img src="img/items/flagRed2.png" class="draggable toolbox-object toolbox-spawn-point" team="red"/>
+                        <img src="img/items/flagBlue2.png" class="draggable toolbox-object toolbox-spawn-point" team="blue"/>
+                        <img src="img/items/flagGreen2.png" class="draggable toolbox-object toolbox-spawn-point" team="green"/>
+                        <img src="img/items/flagYellow2.png" class="draggable toolbox-object toolbox-spawn-point" team="yellow"/>
+                    </div>
                 </div>
+                <div class="form-group">
+                    <label>Gameplay</label>
+                    <div class="input-group">
+                        <select class="form-control" id="gameplay">
+                            <option value="deathmatch">Deathmatch</option>
+                            <option value="captureTheFlag">Capture The Flag</option>
+                            <option value="kingOfTheHill">King Of The Hill</option>
+                            <option value="lastManStanding">Last Man Standing</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" id="gameplay-rules"></div>
             </div>
             <div class="toolbox-tab no-select" tab="ground-objects" id="ground-objects"></div>
             <div class="toolbox-tab no-select" tab="items" id="items"></div>
@@ -113,5 +112,6 @@
 <script src="js/prefabs.js"></script>
 <script src="js/animations.js"></script>
 <script src="js/characters.js"></script>
+<script src="js/gameplay.js"></script>
 </body>
 </html>

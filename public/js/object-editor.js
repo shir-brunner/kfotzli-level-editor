@@ -5,7 +5,7 @@ function editObject($object, isPrefab) {
 
     if (isPrefab) {
         html += '<div class="form-group">';
-        html += '    <label>Prefab Name:</label>';
+        html += '   <label>Prefab Name:</label>';
         html += '   <div class="input-group">';
         html += '       <input type="text" class="form-control prefab-name" />';
         html += '   </div>';

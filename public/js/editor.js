@@ -22,12 +22,14 @@ function setEditorDroppable() {
             let $draggable = $(ui.helper);
             let position = $draggable.position();
 
-            if ($(ui.draggable).attr('id') === 'spawn-point') {
+            if ($(ui.draggable).hasClass('toolbox-spawn-point')) {
                 let left = position.left + $editor.scrollLeft();
                 let top = position.top + $editor.scrollTop();
                 let $spawnPoint = createSpawnPoint({
-                    left: Math.round(left / SQUARE_SIZE) * SQUARE_SIZE,
-                    top: Math.round(top / SQUARE_SIZE) * SQUARE_SIZE
+                    x: Math.round(left / SQUARE_SIZE) * SQUARE_SIZE,
+                    y: Math.round(top / SQUARE_SIZE) * SQUARE_SIZE,
+                    team: $(ui.draggable).attr('team'),
+                    image: $(ui.draggable).attr('src')
                 }).appendTo($spawnPoints);
                 setSpawnPointDraggable($spawnPoint);
             } else if ($draggable.hasClass('toolbox-object')) {

@@ -4,6 +4,7 @@ $(function () {
     setLevelInfoHandlers();
     setEditorDroppable();
     setMiniMapHandlers();
+    setGameplayHandlers();
 
     let $toolboxNav = $('#toolbox-nav');
     $(window).on('resize', function () {
@@ -154,4 +155,10 @@ function setMiniMapHandlers() {
         $editor.scrollLeft(scrollLeft);
         $editor.scrollTop(scrollTop);
     }
+}
+
+function setGameplayHandlers() {
+    let $gameplay = $('#gameplay');
+    $gameplay.on('change', () => showGameplayRules($gameplay.val()));
+    showGameplayRules($gameplay.val());
 }

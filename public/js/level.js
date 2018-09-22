@@ -10,17 +10,17 @@ $(function () {
             return;
         let level = buildLevel();
 
-        if(!level.spawnPoints.length) {
+        if (!level.spawnPoints.length) {
             showToast('error', 'Level must have at least 1 spawn points');
             return;
         }
 
-        if(level.spawnPoints.length > 4) {
+        if (level.spawnPoints.length > 4) {
             showToast('error', 'Level cannot have more than 4 spawn points');
             return;
         }
 
-        if(level.spawnPoints.length < level.minPlayers) {
+        if (level.spawnPoints.length < level.minPlayers) {
             showToast('error', `Level must have at least ${level.minPlayers} spawn points`);
             return;
         }
@@ -85,6 +85,7 @@ function buildLevel() {
     let $levelHeight = $('#level-height');
     let $levelBackground = $('#level-background');
     let $minPlayers = $('#min-players');
+    let $gameplay = $('#gameplay');
 
     return {
         name: $levelName.val(),
@@ -96,18 +97,19 @@ function buildLevel() {
         gameObjects: $level.find('.world-object').map(function () {
             return buildGameObject($(this));
         }).get(),
-        spawnPoints: $level.find('.spawn-point').map(function() {
-            return {
-                x: parseInt($(this).css('left')),
-                y: parseInt($(this).css('top')),
-            };
+        spawnPoints: $level.find('.spawn-point').map(function () {
+            return buildSpawnPoint($(this));
         }).get(),
-        minPlayers: $minPlayers.val()
+        minPlayers: $minPlayers.val(),
+        gameplay: {
+            name: $gameplay.val(),
+            rules: buildGameplayRules()
+        }
     };
 }
 
 function appendLevelPreviewTo($target, level, { showSize, height } = {}) {
-    if(!level.background)
+    if (!level.background)
         return;
 
     let $levelPreview = $('<div class="level-preview"></div>');
@@ -116,7 +118,7 @@ function appendLevelPreviewTo($target, level, { showSize, height } = {}) {
     $levelPreview.append($background);
 
     let previewWidth = $levelPreview.width();
-    if(height === 'auto')
+    if (height === 'auto')
         height = $levelPreview.parent().height();
 
     let previewHeight = height || (previewWidth / (level.size.width / level.size.height));
@@ -135,7 +137,7 @@ function appendLevelPreviewTo($target, level, { showSize, height } = {}) {
     });
 
     level.spawnPoints.forEach(spawnPoint => {
-        let $spawnPoint = $('<img src="img/items/flagRed2.png" />');
+        let $spawnPoint = $('<img src="' + spawnPoint.image + '" />');
         $spawnPoint.css({
             position: 'absolute',
             left: spawnPoint.x / level.size.width * previewWidth,
@@ -171,6 +173,7 @@ function loadLevel(level) {
     $('#level-height').val(level.size.height);
     $('#level-background').val(level.background);
     $('#min-players').val(level.minPlayers);
+    $('#gameplay').val(level.gameplay.name);
     updateLevel();
 
     level.gameObjects.forEach(gameObject => {
@@ -184,13 +187,11 @@ function loadLevel(level) {
     });
 
     level.spawnPoints.forEach(spawnPoint => {
-        let $spawnPoint = createSpawnPoint({
-            left: spawnPoint.x,
-            top: spawnPoint.y
-        }).appendTo($spawnPoints);
+        let $spawnPoint = createSpawnPoint(spawnPoint).appendTo($spawnPoints);
         setSpawnPointDraggable($spawnPoint);
     });
 
+    showGameplayRules(level.gameplay.name, level);
     currentLevel = level;
     updateMiniMap();
 }
@@ -207,8 +208,9 @@ function createWorldObject(info = {}) {
 
 function createSpawnPoint(params = {}) {
     let $spawnPoint = $('<div class="draggable spawn-point"></div>');
-    $spawnPoint.append('<img src="img/items/flagRed2.png" />');
-    $spawnPoint.css(_.pick(params, ['left', 'top']));
+    $spawnPoint.append('<img src="' + params.image + '" />');
+    $spawnPoint.css({ left: params.x, top: params.y });
+    $spawnPoint.data('info', _.omit(params, ['x', 'y']));
     return $spawnPoint;
 }
 
@@ -217,13 +219,13 @@ function setObjectDraggable($object) {
     let $level = $('#level');
     $object.draggable({
         containment: 'body',
-        start: function() {
-            if(pressedKeys[17]) { // 17 === CTRL
+        start: function () {
+            if (pressedKeys[17]) { // 17 === CTRL
                 let $clone = $object.clone();
                 let info = _.cloneDeep($object.data('info'));
                 $clone.data('info', info).appendTo($level);
                 setObjectDraggable($clone);
-                $clone.on('click', function() {
+                $clone.on('click', function () {
                     editObject($clone);
                 });
             }
@@ -242,10 +244,11 @@ function setSpawnPointDraggable($spawnPoint) {
     let $level = $('#level');
     $spawnPoint.draggable({
         containment: 'body',
-        start: function() {
-            if(pressedKeys[17]) { // 17 === CTRL
+        start: function () {
+            if (pressedKeys[17]) { // 17 === CTRL
                 let $clone = $spawnPoint.clone();
-                $clone.appendTo($level);
+                let info = _.cloneDeep($spawnPoint.data('info'));
+                $clone.data('info', info).appendTo($level);
                 setSpawnPointDraggable($clone);
             }
         },
@@ -263,4 +266,11 @@ function buildGameObject($object) {
     gameObject.x = parseInt($object.css('left'));
     gameObject.y = parseInt($object.css('top'));
     return gameObject;
+}
+
+function buildSpawnPoint($spawnPoint) {
+    let spawnPoint = $spawnPoint.data('info');
+    spawnPoint.x = parseInt($spawnPoint.css('left'));
+    spawnPoint.y = parseInt($spawnPoint.css('top'));
+    return spawnPoint;
 }

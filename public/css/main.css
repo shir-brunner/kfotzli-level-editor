@@ -131,11 +131,6 @@ body {
     margin-bottom: 3px;
 }
 
-#spawn-point {
-    width: 100px;
-    height: 100px;
-}
-
 .spawn-point {
     cursor: move;
 }

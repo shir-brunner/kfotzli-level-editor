@@ -66,6 +66,16 @@ function editCharacter($character) {
     html += '           <label>Climb Speed</label>';
     html += '           <input type="number" class="form-control climb-speed" />';
     html += '       </div>';
+    html += '       <div class="form-group">';
+    html += '           <label>Team</label>';
+    html += '           <select class="form-control team">';
+    html += '               <option value="red">Red</option>';
+    html += '               <option value="blue">Blue</option>';
+    html += '               <option value="green">Green</option>';
+    html += '               <option value="yellow">Yellow</option>';
+    html += '               <option value="brown">Brown</option>';
+    html += '           </select>';
+    html += '       </div>';
     html += '       <hr class="mt-5"/>';
     html += '       <div class="form-group">';
 
@@ -93,6 +103,7 @@ function editCharacter($character) {
     let $speed = $dialogBody.find('.speed').val(characterInfo && characterInfo.speed);
     let $jumpHeight = $dialogBody.find('.jump-height').val(characterInfo && characterInfo.jumpHeight);
     let $climbSpeed = $dialogBody.find('.climb-speed').val(characterInfo && characterInfo.climbSpeed);
+    let $team = $dialogBody.find('.team').val(characterInfo && characterInfo.team);
 
     $images.on('click', '.character-image', function () {
         $images.find('.character-image').removeClass('selected');
@@ -122,6 +133,7 @@ function editCharacter($character) {
             speed: $speed.val(),
             jumpHeight: $jumpHeight.val(),
             climbSpeed: $climbSpeed.val(),
+            team: $team.val(),
             image: $dialogBody.find('.character-image.selected').attr('src'),
         }, () => loadCharacters());
         closeDialog();
@@ -142,6 +154,7 @@ function validateCharacterForm($dialogBody) {
     let $speed = $dialogBody.find('.speed');
     let $jumpHeight = $dialogBody.find('.jump-height');
     let $climbSpeed = $dialogBody.find('.climb-speed');
+    let $team = $dialogBody.find('.team');
     let $selectedImage = $dialogBody.find('.character-image.selected');
 
     if(!$name.val()) {
@@ -156,15 +169,22 @@ function validateCharacterForm($dialogBody) {
         return false;
     }
 
+    if(!$jumpHeight.val()) {
+        showToast('error', 'Character jump height is not defined');
+        $jumpHeight.focus();
+        return false;
+    }
+
+
     if(!$climbSpeed.val()) {
         showToast('error', 'Character climb speed is not defined');
         $climbSpeed.focus();
         return false;
     }
 
-    if(!$jumpHeight.val()) {
-        showToast('error', 'Character jump height is not defined');
-        $jumpHeight.focus();
+    if(!$team.val()) {
+        showToast('error', 'Character must have a team');
+        $team.focus();
         return false;
     }
 

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const TEAMS = require('./enums/teams');
 
 const characterSchema = new Schema({
     name: String,
@@ -10,6 +11,7 @@ const characterSchema = new Schema({
     speed: Number,
     width: { type: Number, default: 131 },
     height: { type: Number, default: 188 },
+    team: { type: String, enum: TEAMS, required: true },
     animations: {},
 });
 
