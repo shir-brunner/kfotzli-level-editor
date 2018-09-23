@@ -35,6 +35,10 @@ function editObject($object, isPrefab) {
     html += '           <input type="checkbox" class="obstacle" />';
     html += '           <span class="checkmark"></span>';
     html += '       </label>';
+    html += '       <label class="check-container"> Invisible';
+    html += '           <input type="checkbox" class="invisible" />';
+    html += '           <span class="checkmark"></span>';
+    html += '       </label>';
     html += '   </div>';
     html += '   <div class="form-group" style="display: table-cell;">';
 
@@ -44,6 +48,7 @@ function editObject($object, isPrefab) {
         html += '        <div class="btn btn-primary btn-sm btn-block make-prefab">Make Prefab</div>';
 
     html += '        <div class="btn btn-primary btn-sm btn-block edit-animations">Animations</div>';
+    html += '        <input class="form-control identifier" type="text" placeholder="Identifier"  style="margin-top:15px;" />';
     html += '   </div>';
     html += '</div>';
     html += '<div class="form-group relative containment">';
@@ -60,7 +65,7 @@ function editObject($object, isPrefab) {
         '       </div>';
     html += '</div>';
 
-    if(isPrefab)
+    if (isPrefab)
         html += '<div class="btn btn-danger btn-sm btn-block delete-prefab">Delete Prefab</div>';
 
     // must be called before initialising the collider because it has no width to rely on
@@ -82,7 +87,13 @@ function editObject($object, isPrefab) {
         objectInfo.bumpHeight = $(this).val();
     });
 
+
     showOrHideBumpableOptions($bumpable, $bumpableOptions);
+
+    let $identifier = $objectEditor.find('.identifier');
+    $identifier.val(objectInfo.identifier).on('input', function () {
+        objectInfo.identifier = $(this).val();
+    });
 
     let $stuckable = $objectEditor.find('.stuckable');
     $stuckable.prop('checked', objectInfo.stuckable).on('change', function () {
@@ -99,25 +110,30 @@ function editObject($object, isPrefab) {
         objectInfo.obstacle = $(this).is(':checked');
     });
 
+    let $invisible = $objectEditor.find('.invisible');
+    $invisible.prop('checked', objectInfo.invisible).on('change', function () {
+        objectInfo.invisible = $(this).is(':checked');
+    });
+
     let $makePrefab = $objectEditor.find('.make-prefab');
     $makePrefab.on('click', function () {
         createPrefab($object);
     });
 
     let $prefabName = $objectEditor.find('.prefab-name');
-    $prefabName.val(objectInfo.name).on('input', function() {
+    $prefabName.val(objectInfo.name).on('input', function () {
         objectInfo.name = $prefabName.val();
     });
 
     let $savePrefab = $objectEditor.find('.save-prefab');
     $savePrefab.on('click', function () {
-        if($prefabName.val())
+        if ($prefabName.val())
             updatePrefab(objectInfo);
     });
 
     let $deletePrefab = $objectEditor.find('.delete-prefab');
     $deletePrefab.on('click', function () {
-        if(confirm('Delete prefab ' + objectInfo.name + '?'))
+        if (confirm('Delete prefab ' + objectInfo.name + '?'))
             deletePrefab(objectInfo._id).then(() => {
                 loadPrefabs();
                 showToolboxTab('prefabs');
@@ -125,7 +141,7 @@ function editObject($object, isPrefab) {
     });
 
     let $editAnimations = $objectEditor.find('.edit-animations');
-    $editAnimations.on('click', function() {
+    $editAnimations.on('click', function () {
         showAnimationsDialog($object, isPrefab ? 'prefab' : 'gameObject');
     });
 

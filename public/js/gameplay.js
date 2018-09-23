@@ -42,16 +42,20 @@ function showKingOfTheHillRules($container) {
     let html = '';
 
     html += '<div class="form-group">';
-    html += '   <label>Hold Position</label>';
+    html += '   <label>Hold Object Identifier</label>';
     html += '   <div class="input-group">';
-    html += '       <div class="input-group-text">X</div>';
-    html += '       <input type="text" class="form-control" field="holdX" placeholder="X"/>';
-    html += '       <div class="input-group-text">Y</div>';
-    html += '       <input type="text" class="form-control" field="holdY" placeholder="Y"/>';
-    html += '       <div class="input-group-text">W</div>';
-    html += '       <input type="text" class="form-control" field="holdWidth" placeholder="Width"/>';
-    html += '       <div class="input-group-text">H</div>';
-    html += '       <input type="text" class="form-control" field="holdHeight" placeholder="Height"/>';
+    html += '       <input type="text" class="form-control" field="holdIdentifier" />';
+    html += '       <div class="input-group-text">Identifier</div>';
+    html += '   </div>';
+    html += '</div>';
+
+    html += '<div class="form-group">';
+    html += '   <label>Hold Radius</label>';
+    html += '   <div class="input-group">';
+    html += '       <input type="text" class="form-control" field="holdHorizontalRadius" />';
+    html += '       <div class="input-group-text">Horizontal</div>';
+    html += '       <input type="text" class="form-control" field="holdVerticalRadius" />';
+    html += '       <div class="input-group-text">Vertical</div>';
     html += '   </div>';
     html += '</div>';
 

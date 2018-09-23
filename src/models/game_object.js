@@ -12,13 +12,15 @@ const fields = {
     bumpable: { type: Boolean, default: false },
     bumpHeight: { type: Number, required: false },
     obstacle: { type: Boolean, default: false },
+    invisible: { type: Boolean, default: false },
     padding: {
         left: Number,
         top: Number,
         right: Number,
         bottom: Number
     },
-    animations: {}
+    animations: {},
+    identifier: String
 };
 
 const gameObjectSchema = new Schema(fields);
