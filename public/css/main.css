@@ -131,6 +131,6 @@ body {
     margin-bottom: 3px;
 }
 
-.spawn-point {
+.spawn-point, .flag {
     cursor: move;
 }

@@ -27,14 +27,6 @@ function showDeathmatchRules($container) {
     html += '   </div>';
     html += '</div>';
 
-    html += '<div class="form-group">';
-    html += '   <label>Time Limit</label>';
-    html += '   <div class="input-group">';
-    html += '       <input type="text" class="form-control" field="timeLimit" />';
-    html += '       <div class="input-group-text">Minutes</div>';
-    html += '   </div>';
-    html += '</div>';
-
     $container.html(html);
 }
 
@@ -90,14 +82,17 @@ function showCaptureTheFlagRules($container) {
     html += '</div>';
 
     html += '<div class="form-group">';
-    html += '   <label>Time Limit</label>';
-    html += '   <div class="input-group">';
-    html += '       <input type="text" class="form-control" field="timeLimit" />';
-    html += '       <div class="input-group-text">Minutes</div>';
+    html += '   <label>Flags</label>';
+    html += '   <div>';
+    html += '       <img src="img/items/flag_red2.png" class="draggable toolbox-object toolbox-flag" team="red" />';
+    html += '       <img src="img/items/flag_blue2.png" class="draggable toolbox-object toolbox-flag" team="blue" />';
+    html += '       <img src="img/items/flag_green2.png" class="draggable toolbox-object toolbox-flag" team="green" />';
+    html += '       <img src="img/items/flag_yellow2.png" class="draggable toolbox-object toolbox-flag" team="yellow" />';
     html += '   </div>';
     html += '</div>';
 
     $container.html(html);
+    setToolboxObjectsDraggable($container);
 }
 
 function showLastManStandingRules($container) {
@@ -120,5 +115,10 @@ function buildGameplayRules() {
     $gameplayRules.find('input, select').each(function() {
         rules[$(this).attr('field')] = $(this).val();
     });
+
+    rules.flags = $('#flags').find('.flag').map(function() {
+        return buildFlag($(this));
+    }).get();
+
     return rules;
 }

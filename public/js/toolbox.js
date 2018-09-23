@@ -66,8 +66,8 @@ function getInfoFromServer() {
     });
 }
 
-function setToolboxObjectsDraggable() {
-    let $toolbox = $('#toolbox');
+function setToolboxObjectsDraggable($container) {
+    let $toolbox = $container || $('#toolbox');
     $toolbox.find('.draggable').draggable({
         helper: 'clone',
         appendTo: 'body',

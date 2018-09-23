@@ -148,6 +148,18 @@ function appendLevelPreviewTo($target, level, { showSize, height } = {}) {
         $levelPreview.append($spawnPoint);
     });
 
+    (level.gameplay.rules.flags || []).forEach(flag => {
+        let $flag = $('<img src="img/items/flag_' + flag.team + '2.png" />');
+        $flag.css({
+            position: 'absolute',
+            left: flag.x / level.size.width * previewWidth,
+            top: flag.y / level.size.height * previewHeight,
+            width: 100 / level.size.width * previewWidth,
+            height: 100 / level.size.height * previewHeight,
+        });
+        $levelPreview.append($flag);
+    });
+
     if (showSize) {
         let $size = $('<div class="level-preview-size">' + level.size.width + 'x' + level.size.height + '</div>');
         $levelPreview.append($size);
@@ -167,6 +179,7 @@ function loadLevel(level) {
     let $level = $('#level');
     let $gameObjects = $level.find('#game-objects').empty();
     let $spawnPoints = $level.find('#spawn-points').empty();
+    let $flags = $level.find('#flags').empty();
 
     $('#level-name').val(level.name);
     $('#level-width').val(level.size.width);
@@ -191,6 +204,13 @@ function loadLevel(level) {
         setSpawnPointDraggable($spawnPoint);
     });
 
+    if(level.gameplay.rules.flags) {
+        level.gameplay.rules.flags.forEach(flag => {
+            let $flag = createFlag(flag).appendTo($flags);
+            setFlagDraggable($flag);
+        });
+    }
+
     showGameplayRules(level.gameplay.name, level);
     currentLevel = level;
     updateMiniMap();
@@ -209,9 +229,17 @@ function createWorldObject(info = {}) {
 function createSpawnPoint(params = {}) {
     let $spawnPoint = $('<div class="draggable spawn-point"></div>');
     $spawnPoint.append('<img src="' + params.image + '" />');
-    $spawnPoint.css({ left: params.x, top: params.y });
+    $spawnPoint.css({ left: params.x + 'px', top: params.y + 'px'});
     $spawnPoint.data('info', _.omit(params, ['x', 'y']));
     return $spawnPoint;
+}
+
+function createFlag(params = {}) {
+    let $flag = $('<div class="draggable flag"></div>');
+    $flag.append('<img src="img/items/flag_' + params.team + '2.png" />');
+    $flag.css({ left: params.x + 'px', top: params.y + 'px'});
+    $flag.data('info', _.omit(params, ['x', 'y']));
+    return $flag;
 }
 
 function setObjectDraggable($object) {
@@ -261,6 +289,19 @@ function setSpawnPointDraggable($spawnPoint) {
     });
 }
 
+function setFlagDraggable($flag) {
+    let $editor = $('#editor');
+    $flag.draggable({
+        containment: 'body',
+        stop: function () {
+            if ($flag.position().left - $editor.scrollLeft() > $editor.width()) {
+                $flag.remove();
+                updateMiniMap();
+            }
+        }
+    });
+}
+
 function buildGameObject($object) {
     let gameObject = $object.data('info');
     gameObject.x = parseInt($object.css('left'));
@@ -273,4 +314,11 @@ function buildSpawnPoint($spawnPoint) {
     spawnPoint.x = parseInt($spawnPoint.css('left'));
     spawnPoint.y = parseInt($spawnPoint.css('top'));
     return spawnPoint;
+}
+
+function buildFlag($flag) {
+    let flag = $flag.data('info');
+    flag.x = parseInt($flag.css('left'));
+    flag.y = parseInt($flag.css('top'));
+    return flag;
 }
