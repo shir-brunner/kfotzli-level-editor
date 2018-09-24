@@ -9,21 +9,8 @@ $(function () {
         if (loading)
             return;
         let level = buildLevel();
-
-        if (!level.spawnPoints.length) {
-            showToast('error', 'Level must have at least 1 spawn points');
+        if (!validateLevel(level))
             return;
-        }
-
-        if (level.spawnPoints.length > 4) {
-            showToast('error', 'Level cannot have more than 4 spawn points');
-            return;
-        }
-
-        if (level.spawnPoints.length < level.minPlayers) {
-            showToast('error', `Level must have at least ${level.minPlayers} spawn points`);
-            return;
-        }
 
         loading = true;
         $.ajax({
@@ -103,7 +90,10 @@ function buildLevel() {
         minPlayers: $minPlayers.val(),
         gameplay: {
             name: $gameplay.val(),
-            rules: buildGameplayRules()
+            rules: buildGameplayRules(),
+            flags: $('#flags').find('.flag').map(function () {
+                return buildFlag($(this));
+            }).get()
         }
     };
 }
@@ -148,8 +138,8 @@ function appendLevelPreviewTo($target, level, { showSize, height } = {}) {
         $levelPreview.append($spawnPoint);
     });
 
-    (level.gameplay.rules.flags || []).forEach(flag => {
-        let $flag = $('<img src="img/items/flag_' + flag.team + '2.png" />');
+    (level.gameplay.flags || []).forEach(flag => {
+        let $flag = $('<img src="' + flag.image + '" />');
         $flag.css({
             position: 'absolute',
             left: flag.x / level.size.width * previewWidth,
@@ -204,8 +194,8 @@ function loadLevel(level) {
         setSpawnPointDraggable($spawnPoint);
     });
 
-    if(level.gameplay.rules.flags) {
-        level.gameplay.rules.flags.forEach(flag => {
+    if (level.gameplay.flags) {
+        level.gameplay.flags.forEach(flag => {
             let $flag = createFlag(flag).appendTo($flags);
             setFlagDraggable($flag);
         });
@@ -214,6 +204,30 @@ function loadLevel(level) {
     showGameplayRules(level.gameplay.name, level);
     currentLevel = level;
     updateMiniMap();
+}
+
+function validateLevel(level) {
+    if (!level.spawnPoints.length) {
+        showToast('error', 'Level must have at least 1 spawn points');
+        return false;
+    }
+
+    if (level.spawnPoints.length > 4) {
+        showToast('error', 'Level cannot have more than 4 spawn points');
+        return false;
+    }
+
+    if (level.spawnPoints.length < level.minPlayers) {
+        showToast('error', `Level must have at least ${level.minPlayers} spawn points`);
+        return false;
+    }
+
+    if (level.gameplay.flags && hasDuplicates(level.gameplay.flags.map(flag => flag.team))) {
+        showToast('error', 'Cannot have more than one flag of the same color');
+        return false;
+    }
+
+    return true;
 }
 
 function createWorldObject(info = {}) {
@@ -229,16 +243,19 @@ function createWorldObject(info = {}) {
 function createSpawnPoint(params = {}) {
     let $spawnPoint = $('<div class="draggable spawn-point"></div>');
     $spawnPoint.append('<img src="' + params.image + '" />');
-    $spawnPoint.css({ left: params.x + 'px', top: params.y + 'px'});
+    $spawnPoint.css({ left: params.x + 'px', top: params.y + 'px' });
     $spawnPoint.data('info', _.omit(params, ['x', 'y']));
     return $spawnPoint;
 }
 
 function createFlag(params = {}) {
     let $flag = $('<div class="draggable flag"></div>');
-    $flag.append('<img src="img/items/flag_' + params.team + '2.png" />');
-    $flag.css({ left: params.x + 'px', top: params.y + 'px'});
-    $flag.data('info', _.omit(params, ['x', 'y']));
+    $flag.append('<img src="' + params.image + '" />');
+    $flag.css({ left: params.x + 'px', top: params.y + 'px' });
+
+    let info = _.omit(params, ['x', 'y']);
+    _.set(info, 'animations.idle.frames', [params.image, params.image.replace(2, 1)]);
+    $flag.data('info', info);
     return $flag;
 }
 

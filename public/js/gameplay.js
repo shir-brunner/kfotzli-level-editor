@@ -116,9 +116,5 @@ function buildGameplayRules() {
         rules[$(this).attr('field')] = $(this).val();
     });
 
-    rules.flags = $('#flags').find('.flag').map(function() {
-        return buildFlag($(this));
-    }).get();
-
     return rules;
 }

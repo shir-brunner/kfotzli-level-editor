@@ -26,6 +26,10 @@ function spaceBeforeCapitals(text) {
     return text.replace(/([A-Z])/g, ' $1').trim();
 }
 
+function hasDuplicates(a) {
+    return _.uniq(a).length !== a.length;
+}
+
 function showToast(toastType, message, options = {}) {
     let func = toastr[toastType] || toastr.success;
     toastr.options = {

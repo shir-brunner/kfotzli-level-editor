@@ -19,6 +19,17 @@ const levelSchema = new Schema({
             enum: GAMEPLAYS,
             required: true
         },
+        flags: [{
+            x: Number,
+            y: Number,
+            image: String,
+            team: {
+                type: String,
+                enum: TEAMS,
+                required: true
+            },
+            animations: {}
+        }],
         rules: {}
     },
     gameObjects: [GameObjectSchema],
@@ -32,13 +43,13 @@ const levelSchema = new Schema({
     minPlayers: { type: Number, default: 2 }
 });
 
-levelSchema.pre('save', function(next) {
+levelSchema.pre('save', function (next) {
     this.teams = [];
     this.spawnPoints.forEach(spawnPoint => {
-        if(this.teams.indexOf(spawnPoint.team) === -1)
+        if (this.teams.indexOf(spawnPoint.team) === -1)
             this.teams.push(spawnPoint.team);
     });
-    if(this.teams.length === 1)
+    if (this.teams.length === 1)
         this.teams = [];
     next();
 });

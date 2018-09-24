@@ -40,6 +40,7 @@ function setEditorDroppable() {
                     x: Math.round(left / SQUARE_SIZE) * SQUARE_SIZE,
                     y: Math.round(top / SQUARE_SIZE) * SQUARE_SIZE,
                     team: $(ui.draggable).attr('team'),
+                    image: $(ui.draggable).attr('src')
                 }).appendTo($flags);
                 setFlagDraggable($flag);
             } else if ($draggable.hasClass('toolbox-object')) {
