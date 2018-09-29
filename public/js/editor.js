@@ -5,6 +5,8 @@ $(function () {
     $(window).on('resize', function () {
         updateMiniMap();
     });
+
+    initDragSelector();
 });
 
 function setEditorDroppable() {
@@ -47,7 +49,7 @@ function setEditorDroppable() {
                 let left = position.left + $editor.scrollLeft();
                 let top = position.top + $editor.scrollTop();
                 let info = getDefaultInfoFromToolboxObject($(ui.draggable));
-                let $object = createWorldObject(_.assign(info,{ image: $draggable.attr('src') }));
+                let $object = createWorldObject(_.assign(info, { image: $draggable.attr('src') }));
                 $object.css({
                     left: Math.round(left / SQUARE_SIZE) * SQUARE_SIZE,
                     top: Math.round(top / SQUARE_SIZE) * SQUARE_SIZE
@@ -76,4 +78,81 @@ function getDefaultInfoFromToolboxObject($toolboxObject) {
         info.stuckable = true;
 
     return info;
+}
+
+function initDragSelector() {
+    let $level = $('#level');
+    let $editor = $('#editor');
+    let $selector = $('<div id="drag-selector"></div>').appendTo($level);
+    let dragging = false;
+    let startX, startY;
+
+    $level.on('mousedown', function (e) {
+        if ($(e.target).attr('id') !== 'background')
+            return;
+
+        unselectDraggables();
+        dragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+
+        $selector.show().css({
+            left: startX + $editor.scrollLeft(),
+            top: startY + $editor.scrollTop(),
+            width: 0,
+            height: 0
+        });
+
+    }).on('mousemove', function (e) {
+        if (!dragging)
+            return;
+
+        let left = startX + $editor.scrollLeft();
+        let top = startY + $editor.scrollTop();
+        let width = e.clientX - startX;
+        let height = e.clientY - startY;
+
+        if(width < 0) {
+            left -= Math.abs(width);
+            width = Math.abs(width);
+        }
+        if(height < 0) {
+            top -= Math.abs(height);
+            height = Math.abs(height);
+        }
+
+        $selector.css({
+            left: left,
+            top: top,
+            width: width,
+            height: height
+        });
+    }).on('mouseup', function () {
+        dragging = false;
+        $selector.hide();
+
+        let selectorLeft = parseInt($selector.css('left'));
+        let selectorTop = parseInt($selector.css('top'));
+        let selectorWidth = parseInt($selector.css('width'));
+        let selectorHeight = parseInt($selector.css('height'));
+
+        $level.find('.draggable').each(function () {
+            let $draggable = $(this);
+            let draggableLeft = parseInt($draggable.css('left'));
+            let draggableTop = parseInt($draggable.css('top'));
+            let draggableWidth = parseInt($draggable.css('width'));
+            let draggableHeight = parseInt($draggable.css('height'));
+
+            if (selectorLeft + selectorWidth >= draggableLeft &&
+                selectorLeft <= draggableLeft + draggableWidth &&
+                selectorTop + selectorHeight >= draggableTop &&
+                selectorTop <= draggableTop + draggableHeight) {
+                $draggable.addClass('selected');
+            }
+        });
+    });
+}
+
+function unselectDraggables() {
+    $('#level').find('.draggable').removeClass('selected');
 }

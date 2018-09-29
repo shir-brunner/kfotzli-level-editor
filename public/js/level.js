@@ -235,6 +235,8 @@ function createWorldObject(info = {}) {
     $object.append('<img src="' + info.image + '" />');
     $object.data('info', info);
     $object.on('click', function () {
+        unselectDraggables();
+        $object.addClass('selected');
         editObject($object);
     });
     return $object;
@@ -245,6 +247,10 @@ function createSpawnPoint(params = {}) {
     $spawnPoint.append('<img src="' + params.image + '" />');
     $spawnPoint.css({ left: params.x + 'px', top: params.y + 'px' });
     $spawnPoint.data('info', _.omit(params, ['x', 'y']));
+    $spawnPoint.on('click', function() {
+        unselectDraggables();
+        $spawnPoint.addClass('selected');
+    });
     return $spawnPoint;
 }
 
@@ -256,63 +262,63 @@ function createFlag(params = {}) {
     let info = _.omit(params, ['x', 'y']);
     _.set(info, 'animations.idle.frames', [params.image, params.image.replace(2, 1)]);
     $flag.data('info', info);
+
+    $flag.on('click', function() {
+        unselectDraggables();
+        $flag.addClass('selected');
+    });
     return $flag;
 }
 
 function setObjectDraggable($object) {
+    setDraggable($object, $clone => {
+        $clone.on('click', () => {
+            unselectDraggables();
+            $clone.addClass('selected');
+            editObject($clone);
+        });
+    });
+}
+
+function setSpawnPointDraggable($spawnPoint) {
+    setDraggable($spawnPoint, $clone => {
+        $clone.on('click', () => {
+            unselectDraggables();
+            $clone.addClass('selected');
+        })
+    });
+}
+
+function setFlagDraggable($flag) {
+    setDraggable($flag);
+}
+
+function setDraggable($object, onClone) {
     let $editor = $('#editor');
     let $level = $('#level');
+    let $selected = null;
+
     $object.draggable({
         containment: 'body',
         start: function () {
-            if (pressedKeys[17]) { // 17 === CTRL
+            if (onClone && pressedKeys[17]) { // 17 === CTRL
                 let $clone = $object.clone();
                 let info = _.cloneDeep($object.data('info'));
                 $clone.data('info', info).appendTo($level);
-                setObjectDraggable($clone);
-                $clone.on('click', function () {
-                    editObject($clone);
-                });
+                setDraggable($clone, true, onClone);
+                onClone && onClone($clone);
+            }
+
+            $selected = $level.find('.draggable.selected');
+        },
+        drag: function() {
+            if($selected.length > 1) {
+
             }
         },
         stop: function () {
             if ($object.position().left - $editor.scrollLeft() > $editor.width()) {
                 $object.remove();
-                updateMiniMap();
-            }
-        }
-    });
-}
-
-function setSpawnPointDraggable($spawnPoint) {
-    let $editor = $('#editor');
-    let $level = $('#level');
-    $spawnPoint.draggable({
-        containment: 'body',
-        start: function () {
-            if (pressedKeys[17]) { // 17 === CTRL
-                let $clone = $spawnPoint.clone();
-                let info = _.cloneDeep($spawnPoint.data('info'));
-                $clone.data('info', info).appendTo($level);
-                setSpawnPointDraggable($clone);
-            }
-        },
-        stop: function () {
-            if ($spawnPoint.position().left - $editor.scrollLeft() > $editor.width()) {
-                $spawnPoint.remove();
-                updateMiniMap();
-            }
-        }
-    });
-}
-
-function setFlagDraggable($flag) {
-    let $editor = $('#editor');
-    $flag.draggable({
-        containment: 'body',
-        stop: function () {
-            if ($flag.position().left - $editor.scrollLeft() > $editor.width()) {
-                $flag.remove();
                 updateMiniMap();
             }
         }

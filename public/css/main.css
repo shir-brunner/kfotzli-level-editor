@@ -75,6 +75,16 @@ body {
     height: 80px;
 }
 
+.draggable.selected {
+    border: 1px solid black;
+}
+
+#drag-selector {
+    position: absolute;
+    outline: 3px solid black;
+    display: none;
+}
+
 #level {
     position: relative;
 }
