@@ -120,8 +120,8 @@ function appendLevelPreviewTo($target, level, { showSize, height } = {}) {
             position: 'absolute',
             left: gameObject.x / level.size.width * previewWidth,
             top: gameObject.y / level.size.height * previewHeight,
-            width: 100 / level.size.width * previewWidth,
-            height: 100 / level.size.height * previewHeight,
+            width: SQUARE_SIZE / level.size.width * previewWidth,
+            height: SQUARE_SIZE / level.size.height * previewHeight,
         });
         $levelPreview.append($gameObject);
     });
@@ -235,6 +235,9 @@ function createWorldObject(info = {}) {
     $object.append('<img src="' + info.image + '" />');
     $object.data('info', info);
     $object.on('click', function () {
+        if($object.hasClass('disable-click'))
+            return;
+
         unselectDraggables();
         $object.addClass('selected');
         editObject($object);
@@ -291,6 +294,7 @@ function setDraggable($object, allowClone, onClone) {
         containment: 'body',
         start: function () {
             $selectedDraggables = null;
+            $object.addClass('disable-click');
 
             if (allowClone && pressedKeys[17]) { // 17 === CTRL
                 let $clone = $object.clone();
@@ -343,6 +347,8 @@ function setDraggable($object, allowClone, onClone) {
                     top: Math.round(parseInt($selected.css('top')) / SQUARE_SIZE) * SQUARE_SIZE
                 });
             });
+
+            setTimeout(() => $object.removeClass('disable-click'), 1);
         }
     });
 }
