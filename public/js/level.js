@@ -238,7 +238,8 @@ function createWorldObject(info = {}) {
         if($object.hasClass('disable-click'))
             return;
 
-        unselectDraggables();
+        !pressedKeys[17] && unselectDraggables(); // 17 === CTRL
+
         $object.addClass('selected');
         editObject($object);
     });
@@ -359,6 +360,7 @@ function cloneWorldObject($object, $level, onClone) {
         unselectDraggables();
         $clone.addClass('selected');
     });
+    $clone.removeClass('selected');
     onClone && onClone($clone);
 }
 
