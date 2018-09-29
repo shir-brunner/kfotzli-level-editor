@@ -1,12 +1,18 @@
 $(function () {
     setEditorDroppable();
-
     $('#editor').on('scroll', updateMiniMapRect);
     $(window).on('resize', function () {
         updateMiniMap();
     });
 
     initDragSelector();
+
+    let $level = $('#level');
+    $(document).on('keydown', function(e) {
+        if(e.keyCode=== 46) { // 46 === DELETE
+            $level.find('.draggable.selected').remove();
+        }
+    })
 });
 
 function setEditorDroppable() {

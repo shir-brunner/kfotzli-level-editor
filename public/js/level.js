@@ -247,7 +247,7 @@ function createSpawnPoint(params = {}) {
     $spawnPoint.append('<img src="' + params.image + '" />');
     $spawnPoint.css({ left: params.x + 'px', top: params.y + 'px' });
     $spawnPoint.data('info', _.omit(params, ['x', 'y']));
-    $spawnPoint.on('click', function() {
+    $spawnPoint.on('click', function () {
         unselectDraggables();
         $spawnPoint.addClass('selected');
     });
@@ -263,7 +263,7 @@ function createFlag(params = {}) {
     _.set(info, 'animations.idle.frames', [params.image, params.image.replace(2, 1)]);
     $flag.data('info', info);
 
-    $flag.on('click', function() {
+    $flag.on('click', function () {
         unselectDraggables();
         $flag.addClass('selected');
     });
@@ -310,15 +310,25 @@ function setDraggable($object, onClone) {
             }
 
             $selectedDraggables = $level.find('.draggable.selected');
+            $selectedDraggables.each(function () {
+                let $selected = $(this);
+                $selected.attr('original-left', parseInt($selected.css('left')));
+                $selected.attr('original-top', parseInt($selected.css('top')));
+            });
         },
-        drag: function() {
-            if($selectedDraggables.length > 1) { // multiple dragging
-                $selectedDraggables.each(function() {
+        drag: function () {
+            if ($selectedDraggables.length > 1) { // multiple dragging
+                let offsetX = parseInt($object.css('left')) - parseInt($object.attr('original-left'));
+                let offsetY = parseInt($object.css('top')) - parseInt($object.attr('original-top'));
+
+                $selectedDraggables.each(function () {
                     let $selected = $(this);
-                    if($selected.is($object)) // do not drag yourself, only your friends
+                    if ($selected.is($object)) // do not drag yourself, only your friends
                         return;
 
-                    
+                    let left = parseInt($selected.attr('original-left')) + offsetX;
+                    let top = parseInt($selected.attr('original-top')) + offsetY;
+                    $selected.css({ left: left, top: top });
                 });
             }
         },
@@ -327,6 +337,17 @@ function setDraggable($object, onClone) {
                 $object.remove();
                 updateMiniMap();
             }
+
+            $selectedDraggables.each(function () {
+                let $selected = $(this);
+                if ($selected.is($object))
+                    return;
+
+                $selected.css({
+                    left: Math.round(parseInt($selected.css('left')) / SQUARE_SIZE) * SQUARE_SIZE,
+                    top: Math.round(parseInt($selected.css('top')) / SQUARE_SIZE) * SQUARE_SIZE
+                });
+            });
         }
     });
 }
