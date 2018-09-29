@@ -293,27 +293,24 @@ function setDraggable($object, allowClone, onClone) {
     $object.draggable({
         containment: 'body',
         start: function () {
-            $selectedDraggables = null;
             $object.addClass('disable-click');
+            $selectedDraggables = $level.find('.draggable.selected');
 
             if (allowClone && pressedKeys[17]) { // 17 === CTRL
-                let $clone = $object.clone();
-                let info = _.cloneDeep($object.data('info'));
-                $clone.data('info', info).appendTo($level);
-                setDraggable($clone, true, onClone);
-                $clone.on('click', () => {
-                    unselectDraggables();
-                    $clone.addClass('selected');
-                });
-                onClone && onClone($clone);
-            } else {
-                $selectedDraggables = $level.find('.draggable.selected');
-                $selectedDraggables.each(function () {
-                    let $selected = $(this);
-                    $selected.attr('original-left', parseInt($selected.css('left')));
-                    $selected.attr('original-top', parseInt($selected.css('top')));
-                });
+                if($selectedDraggables.length > 1) {
+                    $selectedDraggables.each(function () {
+                        cloneWorldObject($(this), $level, onClone);
+                    });
+                } else {
+                    cloneWorldObject($object, $level, onClone);
+                }
             }
+
+            $selectedDraggables.each(function () {
+                let $selected = $(this);
+                $selected.attr('original-left', parseInt($selected.css('left')));
+                $selected.attr('original-top', parseInt($selected.css('top')));
+            });
         },
         drag: function () {
             if ($selectedDraggables && $selectedDraggables.length > 1) { // multiple dragging
@@ -351,6 +348,18 @@ function setDraggable($object, allowClone, onClone) {
             setTimeout(() => $object.removeClass('disable-click'), 1);
         }
     });
+}
+
+function cloneWorldObject($object, $level, onClone) {
+    let $clone = $object.clone();
+    let info = _.cloneDeep($object.data('info'));
+    $clone.data('info', info).appendTo($level);
+    setDraggable($clone, true, onClone);
+    $clone.on('click', () => {
+        unselectDraggables();
+        $clone.addClass('selected');
+    });
+    onClone && onClone($clone);
 }
 
 function buildGameObject($object) {
