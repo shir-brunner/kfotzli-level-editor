@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 const fields = {
     x: Number,
     y: Number,
-    width: { type: Number, default: 100 },
-    height: { type: Number, default: 100 },
+    width: { type: Number },
+    height: { type: Number },
     image: String,
     stuckable: { type: Boolean, default: false },
     climbable: { type: Boolean, default: false },

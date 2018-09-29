@@ -132,8 +132,8 @@ function appendLevelPreviewTo($target, level, { showSize, height } = {}) {
             position: 'absolute',
             left: spawnPoint.x / level.size.width * previewWidth,
             top: spawnPoint.y / level.size.height * previewHeight,
-            width: 100 / level.size.width * previewWidth,
-            height: 100 / level.size.height * previewHeight,
+            width: SQUARE_SIZE / level.size.width * previewWidth,
+            height: SQUARE_SIZE / level.size.height * previewHeight,
         });
         $levelPreview.append($spawnPoint);
     });
@@ -144,8 +144,8 @@ function appendLevelPreviewTo($target, level, { showSize, height } = {}) {
             position: 'absolute',
             left: flag.x / level.size.width * previewWidth,
             top: flag.y / level.size.height * previewHeight,
-            width: 100 / level.size.width * previewWidth,
-            height: 100 / level.size.height * previewHeight,
+            width: SQUARE_SIZE / level.size.width * previewWidth,
+            height: SQUARE_SIZE / level.size.height * previewHeight,
         });
         $levelPreview.append($flag);
     });
@@ -323,6 +323,8 @@ function buildGameObject($object) {
     let gameObject = $object.data('info');
     gameObject.x = parseInt($object.css('left'));
     gameObject.y = parseInt($object.css('top'));
+    gameObject.width = SQUARE_SIZE;
+    gameObject.height = SQUARE_SIZE;
     return gameObject;
 }
 

@@ -9,8 +9,8 @@ const characterSchema = new Schema({
     climbSpeed: Number,
     image: String,
     speed: Number,
-    width: { type: Number, default: 131 },
-    height: { type: Number, default: 188 },
+    width: { type: Number, default: 105 },
+    height: { type: Number, default: 150 },
     team: { type: String, enum: TEAMS, required: true },
     animations: {},
 });

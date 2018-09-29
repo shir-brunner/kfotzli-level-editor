@@ -1,4 +1,4 @@
-const SQUARE_SIZE = 100;
+const SQUARE_SIZE = 80;
 
 let pressedKeys = {};
 
