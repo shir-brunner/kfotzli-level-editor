@@ -102,7 +102,7 @@ function initDragSelector() {
             width: 0,
             height: 0
         });
-
+        e.preventDefault();
     }).on('mousemove', function (e) {
         if (!dragging)
             return;
@@ -112,11 +112,11 @@ function initDragSelector() {
         let width = e.clientX - startX;
         let height = e.clientY - startY;
 
-        if(width < 0) {
+        if (width < 0) {
             left -= Math.abs(width);
             width = Math.abs(width);
         }
-        if(height < 0) {
+        if (height < 0) {
             top -= Math.abs(height);
             height = Math.abs(height);
         }
@@ -129,7 +129,6 @@ function initDragSelector() {
         });
     }).on('mouseup', function () {
         dragging = false;
-        $selector.hide();
 
         let selectorLeft = parseInt($selector.css('left'));
         let selectorTop = parseInt($selector.css('top'));
@@ -150,6 +149,8 @@ function initDragSelector() {
                 $draggable.addClass('selected');
             }
         });
+
+        $selector.hide().css({ left: 0, top: 0 });
     });
 }
 

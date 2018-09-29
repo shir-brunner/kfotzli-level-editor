@@ -296,7 +296,7 @@ function setFlagDraggable($flag) {
 function setDraggable($object, onClone) {
     let $editor = $('#editor');
     let $level = $('#level');
-    let $selected = null;
+    let $selectedDraggables = null;
 
     $object.draggable({
         containment: 'body',
@@ -309,11 +309,17 @@ function setDraggable($object, onClone) {
                 onClone && onClone($clone);
             }
 
-            $selected = $level.find('.draggable.selected');
+            $selectedDraggables = $level.find('.draggable.selected');
         },
         drag: function() {
-            if($selected.length > 1) {
+            if($selectedDraggables.length > 1) { // multiple dragging
+                $selectedDraggables.each(function() {
+                    let $selected = $(this);
+                    if($selected.is($object)) // do not drag yourself, only your friends
+                        return;
 
+                    
+                });
             }
         },
         stop: function () {
