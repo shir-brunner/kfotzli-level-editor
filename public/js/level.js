@@ -271,29 +271,18 @@ function createFlag(params = {}) {
 }
 
 function setObjectDraggable($object) {
-    setDraggable($object, $clone => {
-        $clone.on('click', () => {
-            unselectDraggables();
-            $clone.addClass('selected');
-            editObject($clone);
-        });
-    });
+    setDraggable($object, true, $clone => $clone.on('click', () => editObject($clone)));
 }
 
 function setSpawnPointDraggable($spawnPoint) {
-    setDraggable($spawnPoint, $clone => {
-        $clone.on('click', () => {
-            unselectDraggables();
-            $clone.addClass('selected');
-        })
-    });
+    setDraggable($spawnPoint, true);
 }
 
 function setFlagDraggable($flag) {
     setDraggable($flag);
 }
 
-function setDraggable($object, onClone) {
+function setDraggable($object, allowClone, onClone) {
     let $editor = $('#editor');
     let $level = $('#level');
     let $selectedDraggables = null;
@@ -301,23 +290,29 @@ function setDraggable($object, onClone) {
     $object.draggable({
         containment: 'body',
         start: function () {
-            if (onClone && pressedKeys[17]) { // 17 === CTRL
+            $selectedDraggables = null;
+
+            if (allowClone && pressedKeys[17]) { // 17 === CTRL
                 let $clone = $object.clone();
                 let info = _.cloneDeep($object.data('info'));
                 $clone.data('info', info).appendTo($level);
                 setDraggable($clone, true, onClone);
+                $clone.on('click', () => {
+                    unselectDraggables();
+                    $clone.addClass('selected');
+                });
                 onClone && onClone($clone);
+            } else {
+                $selectedDraggables = $level.find('.draggable.selected');
+                $selectedDraggables.each(function () {
+                    let $selected = $(this);
+                    $selected.attr('original-left', parseInt($selected.css('left')));
+                    $selected.attr('original-top', parseInt($selected.css('top')));
+                });
             }
-
-            $selectedDraggables = $level.find('.draggable.selected');
-            $selectedDraggables.each(function () {
-                let $selected = $(this);
-                $selected.attr('original-left', parseInt($selected.css('left')));
-                $selected.attr('original-top', parseInt($selected.css('top')));
-            });
         },
         drag: function () {
-            if ($selectedDraggables.length > 1) { // multiple dragging
+            if ($selectedDraggables && $selectedDraggables.length > 1) { // multiple dragging
                 let offsetX = parseInt($object.css('left')) - parseInt($object.attr('original-left'));
                 let offsetY = parseInt($object.css('top')) - parseInt($object.attr('original-top'));
 
@@ -338,7 +333,7 @@ function setDraggable($object, onClone) {
                 updateMiniMap();
             }
 
-            $selectedDraggables.each(function () {
+            $selectedDraggables && $selectedDraggables.each(function () {
                 let $selected = $(this);
                 if ($selected.is($object))
                     return;
