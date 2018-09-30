@@ -1,6 +1,6 @@
 $(function () {
     setNavnarHandlers();
-    getInfoFromServer();
+    getAssetsFromServer();
     setLevelInfoHandlers();
     setEditorDroppable();
     setMiniMapHandlers();
@@ -41,24 +41,28 @@ function showToolboxTab(tab) {
         $toolbox.removeClass('hide-mini-map');
 }
 
-function getInfoFromServer() {
+function getAssetsFromServer() {
     let $groundObjects = $('#ground-objects').empty();
     let $items = $('#items').empty();
     let $creatures = $('#creatures').empty();
+    let $buildings = $('#buildings').empty();
+    let $iceAssets = $('#ice').empty();
 
     $.ajax({
-        url: 'info',
+        url: 'assets',
         method: 'GET',
-        success: function (info) {
+        success: function (assets) {
             let $levelBackground = $('#level-background');
-            $levelBackground.append(info.backgrounds.map(x => '<option value="img/backgrounds/' + htmlEncode(x) + '">' + htmlEncode(x) + '</option>'));
+            $levelBackground.append(assets.backgrounds.map(x => '<option value="img/backgrounds/' + htmlEncode(x) + '">' + htmlEncode(x) + '</option>'));
 
-            $groundObjects.append(info.groundImages.map(file => '<img class="toolbox-object draggable" src="img/ground/' + file + '"/>'));
-            $items.append(info.itemImages.map(file => '<img class="toolbox-object draggable" src="img/items/' + file + '"/>'));
-            $creatures.append(info.creaturesImages.map(file => '<img class="toolbox-object draggable" src="img/enemies/' + file + '"/>'));
-            $creatures.append(info.charactersImages.map(file => '<img class="toolbox-object draggable" src="img/characters/' + file + '"/>'));
+            $groundObjects.append(assets.grounds.map(file => '<img class="toolbox-object draggable" src="img/ground/' + file + '"/>'));
+            $items.append(assets.items.map(file => '<img class="toolbox-object draggable" src="img/items/' + file + '"/>'));
+            $creatures.append(assets.creatures.map(file => '<img class="toolbox-object draggable" src="img/enemies/' + file + '"/>'));
+            $creatures.append(assets.characters.map(file => '<img class="toolbox-object draggable" src="img/characters/' + file + '"/>'));
+            $buildings.append(assets.buildings.map(file => '<img class="toolbox-object draggable" src="img/buildings/' + file + '"/>'));
+            $iceAssets.append(assets.ice.map(file => '<img class="toolbox-object draggable" src="img/ice/' + file + '"/>'));
 
-            window.editorInfo = info;
+            window.assets = assets;
 
             setToolboxObjectsDraggable();
             updateLevel();

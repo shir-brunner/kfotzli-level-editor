@@ -12,7 +12,7 @@ app.use(express.static('public'));
 
 app.use(httpRequestLogger);
 
-app.use('/info', require('./routes/info'));
+app.use('/assets', require('./routes/asset'));
 app.use('/levels', require('./routes/level'));
 app.use('/prefabs', require('./routes/prefab'));
 app.use('/characters', require('./routes/character'));

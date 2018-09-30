@@ -8,8 +8,8 @@ $(function () {
     initDragSelector();
 
     let $level = $('#level');
-    $(document).on('keydown', function(e) {
-        if(e.keyCode=== 46) { // 46 === DELETE
+    $(document).on('keydown', function (e) {
+        if (e.keyCode === 46) { // 46 === DELETE
             $level.find('.draggable.selected').remove();
         }
     })
@@ -63,9 +63,10 @@ function setEditorDroppable() {
                 $gameObjects.append($object);
                 setObjectDraggable($object);
             } else {
+                let info = $draggable.data('info');
                 $draggable.css({
-                    left: Math.round(position.left / SQUARE_SIZE) * SQUARE_SIZE,
-                    top: Math.round(position.top / SQUARE_SIZE) * SQUARE_SIZE
+                    left: _.get(info, 'stickToGrid.x') === false ? position.left : Math.round(position.left / SQUARE_SIZE) * SQUARE_SIZE,
+                    top: _.get(info, 'stickToGrid.y') === false ? position.top : Math.round(position.top / SQUARE_SIZE) * SQUARE_SIZE
                 });
             }
 
@@ -78,7 +79,9 @@ function setEditorDroppable() {
 }
 
 function getDefaultInfoFromToolboxObject($toolboxObject) {
-    let info = {};
+    let info = {
+        stickToGrid: { x: true, y: true }
+    };
 
     if ($toolboxObject.parents('#ground-objects').length)
         info.stuckable = true;
@@ -155,6 +158,12 @@ function initDragSelector() {
                 $draggable.addClass('selected');
             }
         });
+
+        let $selected = $level.find('.world-object.selected');
+        if ($selected.length === 1)
+            editObject($selected);
+        else if ($selected.length > 1)
+            editMultipleObjects($selected);
 
         $selector.hide().css({ left: 0, top: 0 });
     });

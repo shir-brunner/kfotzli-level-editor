@@ -20,7 +20,12 @@ const fields = {
         bottom: Number
     },
     animations: {},
-    identifier: String
+    identifier: String,
+    stickToGrid: {
+        x: { type: Boolean, default: true },
+        y: { type: Boolean, default: true },
+    },
+    zIndex: { type: Number, default: 0 }
 };
 
 const gameObjectSchema = new Schema(fields);

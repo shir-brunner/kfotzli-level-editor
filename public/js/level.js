@@ -233,6 +233,7 @@ function validateLevel(level) {
 function createWorldObject(info = {}) {
     let $object = $('<div class="draggable world-object"></div>');
     $object.append('<img src="' + info.image + '" />');
+    $object.css('z-index', info.zIndex);
     $object.data('info', info);
     $object.on('click', function () {
         if($object.hasClass('disable-click'))
@@ -340,10 +341,12 @@ function setDraggable($object, allowClone, onClone) {
                 if ($selected.is($object))
                     return;
 
-                $selected.css({
-                    left: Math.round(parseInt($selected.css('left')) / SQUARE_SIZE) * SQUARE_SIZE,
-                    top: Math.round(parseInt($selected.css('top')) / SQUARE_SIZE) * SQUARE_SIZE
-                });
+                let info = $selected.data('info');
+                if(_.get(info, 'stickToGrid.x') !== false)
+                    $selected.css('left', Math.round(parseInt($selected.css('left')) / SQUARE_SIZE) * SQUARE_SIZE);
+
+                if(_.get(info, 'stickToGrid.y') !== false)
+                    $selected.css('top', Math.round(parseInt($selected.css('top')) / SQUARE_SIZE) * SQUARE_SIZE);
             });
 
             setTimeout(() => $object.removeClass('disable-click'), 1);

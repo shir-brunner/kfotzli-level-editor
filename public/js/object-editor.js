@@ -39,6 +39,14 @@ function editObject($object, isPrefab) {
     html += '           <input type="checkbox" class="invisible" />';
     html += '           <span class="checkmark"></span>';
     html += '       </label>';
+    html += '       <label class="check-container"> Stick To Grid (X)';
+    html += '           <input type="checkbox" class="stick-x" />';
+    html += '           <span class="checkmark"></span>';
+    html += '       </label>';
+    html += '       <label class="check-container"> Stick To Grid (Y)';
+    html += '           <input type="checkbox" class="stick-y" />';
+    html += '           <span class="checkmark"></span>';
+    html += '       </label>';
     html += '   </div>';
     html += '   <div class="form-group" style="display: table-cell;">';
 
@@ -48,7 +56,8 @@ function editObject($object, isPrefab) {
         html += '        <div class="btn btn-primary btn-sm btn-block make-prefab">Make Prefab</div>';
 
     html += '        <div class="btn btn-primary btn-sm btn-block edit-animations">Animations</div>';
-    html += '        <input class="form-control identifier" type="text" placeholder="Identifier"  style="margin-top:15px;" />';
+    html += '        <div style="margin-top: 15px;">ID: <input class="form-control identifier" type="text" /></div>';
+    html += '        <div style="margin-top: 15px;">Z-Index: <input class="form-control z-index" type="text" /></div>';
     html += '   </div>';
     html += '</div>';
     html += '<div class="form-group relative containment">';
@@ -113,6 +122,22 @@ function editObject($object, isPrefab) {
     let $invisible = $objectEditor.find('.invisible');
     $invisible.prop('checked', objectInfo.invisible).on('change', function () {
         objectInfo.invisible = $(this).is(':checked');
+    });
+
+    let $stickX = $objectEditor.find('.stick-x');
+    $stickX.prop('checked', objectInfo.stickToGrid.x).on('change', function () {
+        objectInfo.stickToGrid.x = $(this).is(':checked');
+    });
+
+    let $stickY = $objectEditor.find('.stick-y');
+    $stickY.prop('checked', objectInfo.stickToGrid.y).on('change', function () {
+        objectInfo.stickToGrid.y = $(this).is(':checked');
+    });
+
+    let $zIndex = $objectEditor.find('.z-index');
+    $zIndex.val(objectInfo.zIndex).on('input', function () {
+        objectInfo.zIndex = $(this).val();
+        $object.css('z-index', objectInfo.zIndex);
     });
 
     let $makePrefab = $objectEditor.find('.make-prefab');
@@ -199,4 +224,75 @@ function showOrHideBumpableOptions($bumpable, $bumpableOptions) {
         $bumpableOptions.show();
     else
         $bumpableOptions.hide();
+}
+
+function editMultipleObjects($objects) {
+    let $objectEditor = $('#object-editor').empty();
+    let html = '';
+
+    html += '<h3>Editing ' + $objects.length + ' objects</h3><hr/>';
+    html += '<div style="display: table; width: 100%;" class="mb-3">';
+    html += '   <div class="form-group" style="display: table-cell;">';
+    html += '       <label class="check-container"> Stuckable';
+    html += '           <input type="checkbox" class="stuckable" />';
+    html += '           <span class="checkmark"></span>';
+    html += '       </label>';
+    html += '       <label class="check-container"> Climbable';
+    html += '           <input type="checkbox" class="climbable" />';
+    html += '           <span class="checkmark"></span>';
+    html += '       </label>';
+    html += '       <label class="check-container"> Obstacle';
+    html += '           <input type="checkbox" class="obstacle" />';
+    html += '           <span class="checkmark"></span>';
+    html += '       </label>';
+    html += '       <label class="check-container"> Invisible';
+    html += '           <input type="checkbox" class="invisible" />';
+    html += '           <span class="checkmark"></span>';
+    html += '       </label>';
+    html += '       <label class="check-container"> Stick To Grid (X)';
+    html += '           <input type="checkbox" class="stick-x" />';
+    html += '           <span class="checkmark"></span>';
+    html += '       </label>';
+    html += '       <label class="check-container"> Stick To Grid (Y)';
+    html += '           <input type="checkbox" class="stick-y" />';
+    html += '           <span class="checkmark"></span>';
+    html += '       </label>';
+    html += '   </div>';
+    html += '   <div class="form-group" style="display: table-cell;">';
+    html += '        <div style="margin-top: 15px;">Z-Index: <input class="form-control z-index" type="text" /></div>';
+    html += '   </div>';
+    html += '</div>';
+
+    showToolboxTab('object-editor');
+
+    $objectEditor.append(html);
+
+    let infos = $objects.map(function () {
+        return $(this).data('info');
+    }).get();
+
+    let editableProps = ['stuckable', 'climbable', 'obstacle', 'invisible',
+        { className: 'stick-x', field: 'stickToGrid.x' },
+        { className: 'stick-y', field: 'stickToGrid.y' },
+        { className: 'z-index', field: 'zIndex', type: 'text' }
+    ];
+
+    editableProps.forEach(prop => {
+        let className = typeof prop === 'string' ? prop : prop.className;
+        let field = typeof prop === 'string' ? prop : prop.field;
+        let type = typeof prop === 'string' ? 'checkbox' : prop.type || 'checkbox';
+
+        let $field = $objectEditor.find('.' + className);
+        if (type === 'checkbox') {
+            let isAllChecked = _.every(infos, info => _.get(info, field));
+            $field.prop('checked', isAllChecked).on('change', function () {
+                infos.forEach(info => _.set(info, field, $(this).is(':checked')));
+            });
+        } else if (type === 'text') {
+            $field.on('input', function () {
+                infos.forEach(info => _.set(info, field, $(this).val()));
+                className === 'z-index' && $objects.css('z-index', $(this).val());
+            });
+        }
+    });
 }
