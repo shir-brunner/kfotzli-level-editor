@@ -91,7 +91,7 @@ function editCharacter($character) {
 
     $dialogBody.html(html);
     let $images = $dialogBody.find('.images');
-    window.assets.charactersImages.forEach(characterImage => {
+    window.assets.characters.forEach(characterImage => {
         let fullPath = 'img/characters/' + characterImage;
         let $image = $('<img class="character-image cp" src="' + fullPath + '" />');
         $images.append($image);
