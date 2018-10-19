@@ -72,6 +72,7 @@ function buildLevel() {
     let $levelHeight = $('#level-height');
     let $levelBackground = $('#level-background');
     let $minPlayers = $('#min-players');
+    let $weather = $('#weather');
     let $gameplay = $('#gameplay');
 
     return {
@@ -88,6 +89,7 @@ function buildLevel() {
             return buildSpawnPoint($(this));
         }).get(),
         minPlayers: $minPlayers.val(),
+        weather: $weather.val(),
         gameplay: {
             name: $gameplay.val(),
             rules: buildGameplayRules(),
@@ -176,6 +178,7 @@ function loadLevel(level) {
     $('#level-height').val(level.size.height);
     $('#level-background').val(level.background);
     $('#min-players').val(level.minPlayers);
+    $('#weather').val(level.weather);
     $('#gameplay').val(level.gameplay.name);
     updateLevel();
 
