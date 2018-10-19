@@ -3,6 +3,11 @@ function editObject($object, isPrefab) {
     let $objectEditor = $('#object-editor').empty();
     let html = '';
 
+    let slopeOptions = '';
+    slopeOptions += '<option value="flat">Flat</option>';
+    slopeOptions += '<option value="right">Right</option>';
+    slopeOptions += '<option value="left">Left</option>';
+
     if (isPrefab) {
         html += '<div class="form-group">';
         html += '   <label>Prefab Name:</label>';
@@ -58,6 +63,7 @@ function editObject($object, isPrefab) {
     html += '        <div class="btn btn-primary btn-sm btn-block edit-animations">Animations</div>';
     html += '        <div style="margin-top: 15px;">ID: <input class="form-control identifier" type="text" /></div>';
     html += '        <div style="margin-top: 15px;">Z-Index: <input class="form-control z-index" type="text" /></div>';
+    html += '        <div style="margin-top: 15px;">Slope: <select class="form-control slope">' + slopeOptions + '</select></div>';
     html += '   </div>';
     html += '</div>';
     html += '<div class="form-group relative containment">';
@@ -102,6 +108,11 @@ function editObject($object, isPrefab) {
     let $identifier = $objectEditor.find('.identifier');
     $identifier.val(objectInfo.identifier).on('input', function () {
         objectInfo.identifier = $(this).val();
+    });
+
+    let $slope = $objectEditor.find('.slope');
+    $slope.val(objectInfo.slope).on('input', function () {
+        objectInfo.slope = $(this).val();
     });
 
     let $stuckable = $objectEditor.find('.stuckable');
@@ -274,7 +285,8 @@ function editMultipleObjects($objects) {
     let editableProps = ['stuckable', 'climbable', 'obstacle', 'invisible',
         { className: 'stick-x', field: 'stickToGrid.x' },
         { className: 'stick-y', field: 'stickToGrid.y' },
-        { className: 'z-index', field: 'zIndex', type: 'text' }
+        { className: 'z-index', field: 'zIndex', type: 'text' },
+        { className: 'slope', field: 'slope', type: 'text' }
     ];
 
     editableProps.forEach(prop => {

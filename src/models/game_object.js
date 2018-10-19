@@ -25,7 +25,8 @@ const fields = {
         x: { type: Boolean, default: true },
         y: { type: Boolean, default: true },
     },
-    zIndex: { type: Number, default: 0 }
+    zIndex: { type: Number, default: 0 },
+    slope: { type: String, enum: ['left', 'right', 'flat'], default: 'flat' }
 };
 
 const gameObjectSchema = new Schema(fields);
