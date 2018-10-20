@@ -32,6 +32,7 @@
             <div class="btn btn-primary" title="Creatures" toggles="creatures"><i class="fa fa-user"></i></div>
             <div class="btn btn-primary" title="Buildings" toggles="buildings"><i class="fa fa-building"></i></div>
             <div class="btn btn-primary" title="Ice" toggles="ice"><i class="fa fa-snowflake-o"></i></div>
+            <div class="btn btn-primary" title="Mushroom" toggles="mushroom"><i class="fa fa-forumbee"></i></div>
             <div class="btn btn-primary" title="Prefabs" toggles="prefabs"><i class="fa fa-cube"></i></div>
             <div class="btn btn-primary" title="Characters" toggles="characters"><i class="fa fa-smile-o"></i></div>
             <div class="btn btn-primary float-right default" title="Load Level" toggles="load-levels"><i
@@ -57,7 +58,7 @@
                         <input type="number" id="level-width" value="5600" class="form-control" style="width: 70px"
                                placeholder="Width"/>
                         <div class="input-group-text">X</div>
-                        <input type="number" id="level-height" value="4800" class="form-control" style="width: 70px"
+                        <input type="number" id="level-height" value="3600" class="form-control" style="width: 70px"
                                placeholder="Height"/>
                     </div>
                 </div>
@@ -72,9 +73,9 @@
                 <div class="form-group">
                     <label>Weather</label>
                     <select class="form-control" id="weather">
+                        <option value="sun">Sun</option>
                         <option value="snow">Snow</option>
                         <option value="rain">Rain</option>
-                        <option value="sun">Sun</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -108,6 +109,7 @@
             <div class="toolbox-tab no-select" tab="creatures" id="creatures"></div>
             <div class="toolbox-tab no-select" tab="buildings" id="buildings"></div>
             <div class="toolbox-tab no-select" tab="ice" id="ice"></div>
+            <div class="toolbox-tab no-select" tab="mushroom" id="mushroom"></div>
             <div class="toolbox-tab no-select" tab="object-editor" id="object-editor"></div>
             <div class="toolbox-tab no-select" tab="load-levels" id="load-levels">
                 <div id="levels"></div>

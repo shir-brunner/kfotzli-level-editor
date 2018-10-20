@@ -30,6 +30,7 @@ function setEditorDroppable() {
 
             let $draggable = $(ui.helper);
             let position = $draggable.position();
+            let objectInfo = $draggable.data('info') || {};
 
             if ($(ui.draggable).hasClass('toolbox-spawn-point')) {
                 let left = position.left + $editor.scrollLeft();
@@ -63,15 +64,14 @@ function setEditorDroppable() {
                 $gameObjects.append($object);
                 setObjectDraggable($object);
             } else {
-                let info = $draggable.data('info');
                 $draggable.css({
-                    left: _.get(info, 'stickToGrid.x') === false ? position.left : Math.round(position.left / SQUARE_SIZE) * SQUARE_SIZE,
-                    top: _.get(info, 'stickToGrid.y') === false ? position.top : Math.round(position.top / SQUARE_SIZE) * SQUARE_SIZE
+                    left: _.get(objectInfo, 'stickToGrid.x') === false ? position.left : Math.round(position.left / SQUARE_SIZE) * SQUARE_SIZE,
+                    top: _.get(objectInfo, 'stickToGrid.y') === false ? position.top : Math.round(position.top / SQUARE_SIZE) * SQUARE_SIZE
                 });
             }
 
-            $draggable.css('width', SQUARE_SIZE);
-            //$draggable.css('height', SQUARE_SIZE);
+            $draggable.css('width', objectInfo.width || SQUARE_SIZE);
+            $draggable.css('height', objectInfo.width ? 'auto' : SQUARE_SIZE);
 
             updateMiniMap();
         }

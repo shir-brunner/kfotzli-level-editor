@@ -64,6 +64,7 @@ function editObject($object, isPrefab) {
     html += '        <div style="margin-top: 15px;">ID: <input class="form-control identifier" type="text" /></div>';
     html += '        <div style="margin-top: 15px;">Z-Index: <input class="form-control z-index" type="text" /></div>';
     html += '        <div style="margin-top: 15px;">Slope: <select class="form-control slope">' + slopeOptions + '</select></div>';
+    html += '        <div style="margin-top: 15px;">Width: <input class="form-control width" /></div>';
     html += '   </div>';
     html += '</div>';
     html += '<div class="form-group relative containment">';
@@ -102,7 +103,6 @@ function editObject($object, isPrefab) {
         objectInfo.bumpHeight = $(this).val();
     });
 
-
     showOrHideBumpableOptions($bumpable, $bumpableOptions);
 
     let $identifier = $objectEditor.find('.identifier');
@@ -113,6 +113,12 @@ function editObject($object, isPrefab) {
     let $slope = $objectEditor.find('.slope');
     $slope.val(objectInfo.slope).on('change', function () {
         objectInfo.slope = $(this).val();
+    });
+
+    let $width = $objectEditor.find('.width');
+    $width.val(objectInfo.width).on('input', function () {
+        objectInfo.width = $(this).val();
+        $object.css('width', objectInfo.width);
     });
 
     let $stuckable = $objectEditor.find('.stuckable');

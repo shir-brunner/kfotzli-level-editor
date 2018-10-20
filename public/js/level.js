@@ -240,6 +240,8 @@ function createWorldObject(info = {}) {
     let $object = $('<div class="draggable world-object"></div>');
     $object.append('<img src="' + info.image + '" />');
     $object.css('z-index', info.zIndex);
+    $object.css('width', info.width);
+    $object.css('height', info.height);
     $object.data('info', info);
     $object.on('click', function () {
         if($object.hasClass('disable-click'))
@@ -341,7 +343,6 @@ function setDraggable($object, allowClone, onClone) {
                 $object.remove();
                 updateMiniMap();
             }
-
             $selectedDraggables && $selectedDraggables.each(function () {
                 let $selected = $(this);
                 if ($selected.is($object))
@@ -370,6 +371,8 @@ function cloneWorldObject($object, $level, onClone) {
         $clone.addClass('selected');
     });
     $clone.removeClass('selected');
+    $object.css('width', info.width);
+    $object.css('height', info.height);
     onClone && onClone($clone);
 }
 

@@ -7,7 +7,7 @@ const config = require('./config');
 const chalk = require('chalk');
 const moment = require('moment');
 
-app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.json({ limit: '50mb' }));
 app.use(booleanParser());
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb', parameterLimit: 1000000 }));
 app.use(express.static('public'));

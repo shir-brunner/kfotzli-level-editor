@@ -47,6 +47,7 @@ function getAssetsFromServer() {
     let $creatures = $('#creatures').empty();
     let $buildings = $('#buildings').empty();
     let $iceAssets = $('#ice').empty();
+    let $mushroomAssets = $('#mushroom').empty();
 
     $.ajax({
         url: 'assets',
@@ -61,6 +62,7 @@ function getAssetsFromServer() {
             $creatures.append(assets.characters.map(file => '<img class="toolbox-object draggable" src="img/characters/' + file + '"/>'));
             $buildings.append(assets.buildings.map(file => '<img class="toolbox-object draggable" src="img/buildings/' + file + '"/>'));
             $iceAssets.append(assets.ice.map(file => '<img class="toolbox-object draggable" src="img/ice/' + file + '"/>'));
+            $mushroomAssets.append(assets.mushroom.map(file => '<img class="toolbox-object draggable" src="img/mushroom/' + file + '"/>'));
 
             window.assets = assets;
 

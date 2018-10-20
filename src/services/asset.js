@@ -10,7 +10,8 @@ class AssetService {
             creatures: getImageFiles('enemies'),
             characters: getImageFiles('characters'),
             buildings: getImageFiles('buildings'),
-            ice: getImageFiles('ice')
+            ice: getImageFiles('ice'),
+            mushroom: getImageFiles('mushroom')
         });
     }
 }
