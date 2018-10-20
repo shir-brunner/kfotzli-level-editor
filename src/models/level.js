@@ -41,7 +41,8 @@ const levelSchema = new Schema({
     }],
     teams: [],
     minPlayers: { type: Number, default: 2 },
-    weather: { type: String, enum: ['sun', 'rain', 'snow'], default: 'sun' }
+    weather: { type: String, enum: ['sun', 'rain', 'snow'], default: 'sun' },
+    published: { type: Boolean, default: false }
 });
 
 levelSchema.pre('save', function (next) {

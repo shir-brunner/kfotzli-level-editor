@@ -2,7 +2,7 @@ const levelService = require('../services/level');
 
 module.exports = {
     getAll(req, res) {
-        levelService.getAll().then(levels => res.status(200).send(levels));
+        levelService.getAll(req.query).then(levels => res.status(200).send(levels));
     },
 
     create(req, res) {

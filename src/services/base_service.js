@@ -5,8 +5,8 @@ module.exports = class BaseService {
         this._model = model;
     }
 
-    getAll() {
-        return this._model.find();
+    getAll(query = {}) {
+        return this._model.find(query);
     }
 
     create(params) {

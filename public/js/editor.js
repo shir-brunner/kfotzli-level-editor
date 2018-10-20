@@ -71,7 +71,7 @@ function setEditorDroppable() {
             }
 
             $draggable.css('width', SQUARE_SIZE);
-            $draggable.css('height', SQUARE_SIZE);
+            //$draggable.css('height', SQUARE_SIZE);
 
             updateMiniMap();
         }

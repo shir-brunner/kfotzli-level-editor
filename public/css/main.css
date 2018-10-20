@@ -66,13 +66,11 @@ body {
 #toolbox .draggable {
     margin: 5px;
     width: 64px;
-    height: 64px;
     cursor: move;
 }
 
 .draggable {
     width: 80px;
-    height: 80px;
 }
 
 .draggable.selected {

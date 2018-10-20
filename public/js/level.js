@@ -71,6 +71,7 @@ function buildLevel() {
     let $levelWidth = $('#level-width');
     let $levelHeight = $('#level-height');
     let $levelBackground = $('#level-background');
+    let $levelPublished = $('#level-published');
     let $minPlayers = $('#min-players');
     let $weather = $('#weather');
     let $gameplay = $('#gameplay');
@@ -82,6 +83,7 @@ function buildLevel() {
             height: $levelHeight.val(),
         },
         background: $levelBackground.val(),
+        published: $levelPublished.is(':checked'),
         gameObjects: $level.find('.world-object').map(function () {
             return buildGameObject($(this));
         }).get(),
@@ -122,8 +124,8 @@ function appendLevelPreviewTo($target, level, { showSize, height } = {}) {
             position: 'absolute',
             left: gameObject.x / level.size.width * previewWidth,
             top: gameObject.y / level.size.height * previewHeight,
-            width: SQUARE_SIZE / level.size.width * previewWidth,
-            height: SQUARE_SIZE / level.size.height * previewHeight,
+            width: gameObject.width / level.size.width * previewWidth,
+            height: gameObject.height / level.size.height * previewHeight,
         });
         $levelPreview.append($gameObject);
     });
@@ -177,6 +179,7 @@ function loadLevel(level) {
     $('#level-width').val(level.size.width);
     $('#level-height').val(level.size.height);
     $('#level-background').val(level.background);
+    $('#level-published').prop('checked', level.published);
     $('#min-players').val(level.minPlayers);
     $('#weather').val(level.weather);
     $('#gameplay').val(level.gameplay.name);
@@ -374,8 +377,8 @@ function buildGameObject($object) {
     let gameObject = $object.data('info');
     gameObject.x = parseInt($object.css('left'));
     gameObject.y = parseInt($object.css('top'));
-    gameObject.width = SQUARE_SIZE;
-    gameObject.height = SQUARE_SIZE;
+    gameObject.width = parseInt($object.width());
+    gameObject.height = parseInt($object.height());
     return gameObject;
 }
 

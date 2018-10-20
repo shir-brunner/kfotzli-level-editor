@@ -111,7 +111,7 @@ function editObject($object, isPrefab) {
     });
 
     let $slope = $objectEditor.find('.slope');
-    $slope.val(objectInfo.slope).on('input', function () {
+    $slope.val(objectInfo.slope).on('change', function () {
         objectInfo.slope = $(this).val();
     });
 
@@ -286,7 +286,7 @@ function editMultipleObjects($objects) {
         { className: 'stick-x', field: 'stickToGrid.x' },
         { className: 'stick-y', field: 'stickToGrid.y' },
         { className: 'z-index', field: 'zIndex', type: 'text' },
-        { className: 'slope', field: 'slope', type: 'text' }
+        { className: 'slope', field: 'slope', type: 'select' }
     ];
 
     editableProps.forEach(prop => {
@@ -304,6 +304,10 @@ function editMultipleObjects($objects) {
             $field.on('input', function () {
                 infos.forEach(info => _.set(info, field, $(this).val()));
                 className === 'z-index' && $objects.css('z-index', $(this).val());
+            });
+        } else if (type === 'select') {
+            $field.on('change', function () {
+                infos.forEach(info => _.set(info, field, $(this).val()));
             });
         }
     });
